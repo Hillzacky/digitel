@@ -6,16 +6,17 @@ const digiflazz = new Digiflazz(process.env.USR, process.env.API);
 const token = process.env.TOKEN;
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
-
-bot.setWebHook(`${url}/bot${token}`);
+const host = process.env.HOST ?? '0.0.0.0';
+const port = process.env.PORT ?? 8081;
+bot.setWebHook(`${host}/bot${token}`);
 const app = express();
 app.use(express.json());
 app.post(`/bot${token}`, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
 });
-app.listen(process.env.PORT ?? 8081, process.env.HOST ?? '0.0.0.0', () => {
-  console.log(`Server is listening on ${port}`);
+app.listen(port, host, () => {
+  console.info(`Server is listening on ${port}`);
 });
 
 const waktu =()=> {
