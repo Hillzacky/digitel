@@ -6,17 +6,33 @@ const token = process.env.TOKEN;
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
 
-bot.onText(/\/deposit (.+)/, (msg, match) => {
-  let deposit = await digiflazz.deposit(0,'BANK','AN');
+const waktu =()=> {
+  const date = new Date();
+  const [month, day, year] = [
+    date.getMonth(),
+    date.getDate(),
+    date.getFullYear(),
+  ];
+  const [hour, minutes, seconds] = [
+    date.getHours(),
+    date.getMinutes(),
+    date.getSeconds(),
+  ];
+  return day+month+year+hour+minutes+seconds
+}
+
+bot.onText(/\/deposit (.*?)\s+(.*?)\s+(.*?)/, (msg, match) => {
+  // nominal, bank, a/n
+  let deposit = await digiflazz.deposit(match[1],match[2],match[3]);
   const chatId = msg.chat.id;
-  const resp = match[1];
   bot.sendMessage(chatId, deposit);
 });
 
-bot.onText(/\/trx (.+)/, (msg, match) => {
-  let prabyr = await digiflazz.transaksi('sku', 'tujuan', 'ref_id');
+bot.onText(/\/trx (.+)\s+(.+)\s+(.+)/, (msg, match) => {
+  // sku, tujuan, ref_id
+  const ref = (match[3]) ? match[3] : 'R#' + waktu();
+  let prabyr = await digiflazz.transaksi(match[1],match[2],ref);
   const chatId = msg.chat.id;
-  const resp = match[1];
   bot.sendMessage(chatId, prabyr);
 });
 
@@ -44,7 +60,6 @@ bot.onText(/\/status (.+)/, (msg, match) => {
 bot.on('message', (msg) => {
   const chatId = msg.chat.id;
   const messageText = msg.text;
-
   if (messageText === '/menu') {
     bot.sendMessage(chatId, 'Welcome to the ppob!');
   }
