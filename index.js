@@ -1,4 +1,5 @@
 const express = require('express');
+const os = require('os');
 const TelegramBot = require('node-telegram-bot-api');
 const Digiflazz = require('digiflazz');
 const digiflazz = new Digiflazz(process.env.USR, process.env.API);
@@ -88,6 +89,10 @@ bot.on('message', async (msg) => {
   if (messageText === '/menu') {
     bot.sendMessage(chatId, 'Welcome to the ppob!');
   }
+  if (messageText === '/ip') {
+    const ni = os.networkInterfaces();
+    bot.sendMessage(chatId, JSON.stringify(ni));
+  }
   if (messageText === '/ceksaldo') {
     let saldo = await digiflazz.cekSaldo();
     bot.sendMessage(chatId, 'Saldo: Rp' + saldo.deposit);
@@ -98,7 +103,7 @@ bot.on('message', async (msg) => {
   }
 });
 
-bot.on('polling_error', (error) => {
+bot.on('polling_error', (err) => {
   bot.startPolling();
-  console.log(error.code);
+  console.log(err.code);
 });
