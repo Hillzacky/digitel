@@ -1,0 +1,23 @@
+{
+  "name": "digitel",
+  "version": "0.0.1",
+  "description": "Digiflazz for telegram",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "setup": "npm install",
+    "test": "node test/index.js"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "digiflazz",
+    "api"
+  ],
+  "author": "Hillzacky",
+  "license": "MIT",
+  "dependencies": {
+    "digiflazz": "^1.1.1",
+    "node-telegram-bot-api": "^0.66.0"
+  }
+}
