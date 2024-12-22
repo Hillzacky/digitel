@@ -6,10 +6,11 @@ const digiflazz = new Digiflazz(process.env.USR, process.env.API);
 const token = process.env.TOKEN;
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true});
+const url = process.env.URL ?? '0.0.0.0'
 const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ?? 8081;
 const app = express();
-bot.setWebHook(`${host}/bot${token}`);
+bot.setWebHook(`${url}/bot${token}`);
 app.use(express.json());
 app.post(`/bot${token}`, (req, res) => {
   bot.processUpdate(req.body);
@@ -37,6 +38,16 @@ const waktu =()=> {
   return day+month+year+hour+minutes+seconds
 }
 
+bot.setMyCommands([
+    { command: '/menu', description: 'Main Menu' },
+    { command: '/deposit', description: 'Isi saldo. { nominal, bank, a/n }' },
+    { command: '/trx', description: 'Transaksi prabayar.' },
+    { command: '/cek', description: 'Periksa inquiry pascabayar.' },
+    { command: '/bayar', description: 'Bayar transaksi pascabayar.' },
+    { command: '/status', description: 'Tampilkan status pasca bayar' },
+    { command: '/ceksaldo', description: 'Periksa saldo.' },
+    { command: '/harga', description: 'Tampilkan daftar harga.' }
+])
 bot.onText(/\/deposit (.*?)\s+(.*?)\s+(.*?)/, async (msg, match) => {
   // nominal, bank, a/n
   let deposit = await digiflazz.deposit(match[1],match[2],match[3]);
@@ -81,7 +92,7 @@ bot.on('message', async (msg) => {
   }
   if (messageText === '/ceksaldo') {
     let saldo = await digiflazz.cekSaldo();
-    bot.sendMessage(chatId, 'Saldo: '+saldo);
+    bot.sendMessage(chatId, 'Saldo: ' + JSON.stringify(saldo));
   }
   if (messageText === '/harga') {
     let harga = await digiflazz.daftarHarga();
