@@ -49,7 +49,7 @@ bot.setMyCommands([
     { command: '/harga', description: 'Tampilkan daftar harga.' }
 ]);
 
-bot.onText(/\/deposit (.*?)\s+(.*?)\s+(.*?)/, async (msg, match) => {
+bot.onText(/\/deposit (.*?) (.*?) (.*?)/, async (msg, match) => {
   // nominal, bank, a/n
   let deposit = await digiflazz.deposit(match[1],match[2],match[3]);
   const chatId = msg.chat.id;
@@ -64,24 +64,21 @@ bot.onText(/\/trx (.+) (.+) (.+)/, async (msg, match) => {
   bot.sendMessage(chatId, 'Match: ' + JSON.stringify(match));
 });
 
-bot.onText(/\/cek (.+)/, async (msg, match) => {
-  let cekPasca = await digiflazz.transaksi('sku', 'tujuan', 'ref_id', 'CEK');
+bot.onText(/\/cek (.+) (.+) (.+)/, async (msg, match) => {
+  let cekPasca = await digiflazz.transaksi(match[1],match[2],match[3], 'CEK');
   const chatId = msg.chat.id;
-  const resp = match[1];
   bot.sendMessage(chatId, cekPasca);
 });
 
-bot.onText(/\/bayar (.+)/, async (msg, match) => {
-  let byrPasca = await digiflazz.transaksi('sku', 'tujuan', 'ref_id', 'BAYAR');
+bot.onText(/\/bayar (.+) (.+) (.+)/, async (msg, match) => {
+  let byrPasca = await digiflazz.transaksi(match[1],match[2],match[3], 'BAYAR');
   const chatId = msg.chat.id;
-  const resp = match[1];
   bot.sendMessage(chatId, byrPasca);
 });
 
-bot.onText(/\/status (.+)/, async (msg, match) => {
-  let statusPasca = await digiflazz.transaksi('sku', 'tujuan', 'ref_id', 'STATUS');
+bot.onText(/\/status (.+) (.+) (.+)/, async (msg, match) => {
+  let statusPasca = await digiflazz.transaksi(match[1],match[2],match[3], 'STATUS');
   const chatId = msg.chat.id;
-  const resp = match[1];
   bot.sendMessage(chatId, statusPasca);
 });
 
@@ -93,7 +90,7 @@ bot.on('message', async (msg) => {
   }
   if (messageText === '/ceksaldo') {
     let saldo = await digiflazz.cekSaldo();
-    bot.sendMessage(chatId, 'Saldo: Rp' + JSON.stringify(saldo));
+    bot.sendMessage(chatId, 'Saldo: Rp' + saldo.deposit);
   }
   if (messageText === '/harga') {
     let harga = await digiflazz.daftarHarga();
