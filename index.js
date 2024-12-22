@@ -93,10 +93,15 @@ bot.on('message', async (msg) => {
   }
   if (messageText === '/ceksaldo') {
     let saldo = await digiflazz.cekSaldo();
-    bot.sendMessage(chatId, 'Saldo: Rp' + JSON.stringify(saldo).deposit);
+    bot.sendMessage(chatId, 'Saldo: Rp' + JSON.stringify(saldo)?.deposit);
   }
   if (messageText === '/harga') {
     let harga = await digiflazz.daftarHarga();
-    bot.sendMessage(chatId, JSON.stringify(harga));
+    bot.sendMessage(chatId, 'List: ' + JSON.stringify(harga));
   }
+});
+
+bot.on('polling_error', (error) => {
+  bot.startPolling();
+  console.log(error.code);
 });
