@@ -56,12 +56,12 @@ bot.onText(/\/deposit (.*?)\s+(.*?)\s+(.*?)/, async (msg, match) => {
   bot.sendMessage(chatId, JSON.stringify(match));
 });
 
-bot.onText(/\/trx (.+)\s+(.+)\s+(.+)/, async (msg, match) => {
+bot.onText(/\/trx (.+) (.+) (.+)/, async (msg, match) => {
   // sku, tujuan, ref_id
   const ref = (match[3]) ? match[3] : 'R#' + waktu();
   let prabyr = await digiflazz.transaksi(match[1],match[2],ref);
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, JSON.stringify(match));
+  bot.sendMessage(chatId, 'Match: ' + JSON.stringify(match));
 });
 
 bot.onText(/\/cek (.+)/, async (msg, match) => {
@@ -93,7 +93,7 @@ bot.on('message', async (msg) => {
   }
   if (messageText === '/ceksaldo') {
     let saldo = await digiflazz.cekSaldo();
-    bot.sendMessage(chatId, 'Saldo: Rp' + JSON.stringify(saldo)?.deposit);
+    bot.sendMessage(chatId, 'Saldo: Rp' + JSON.stringify(saldo));
   }
   if (messageText === '/harga') {
     let harga = await digiflazz.daftarHarga();
