@@ -6,7 +6,7 @@ const digiflazz = new Digiflazz(process.env.USR, process.env.API);
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TOKEN;
 // Create a bot that uses 'polling' to fetch new updates
-const bot = new TelegramBot(token, {polling: true});
+const bot = new TelegramBot(token, { polling: false });
 const url = process.env.URL ?? '0.0.0.0'
 const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ?? 8081;
@@ -105,5 +105,5 @@ bot.on('message', async (msg) => {
 
 bot.on('polling_error', (err) => {
   bot.startPolling();
-  console.log(err.code);
+  console.error(err.code);
 });
