@@ -21,14 +21,14 @@ const waktu =()=> {
   return day+month+year+hour+minutes+seconds
 }
 
-bot.onText(/\/deposit (.*?)\s+(.*?)\s+(.*?)/, (msg, match) => {
+bot.onText(/\/deposit (.*?)\s+(.*?)\s+(.*?)/, async (msg, match) => {
   // nominal, bank, a/n
   let deposit = await digiflazz.deposit(match[1],match[2],match[3]);
   const chatId = msg.chat.id;
   bot.sendMessage(chatId, deposit);
 });
 
-bot.onText(/\/trx (.+)\s+(.+)\s+(.+)/, (msg, match) => {
+bot.onText(/\/trx (.+)\s+(.+)\s+(.+)/, async (msg, match) => {
   // sku, tujuan, ref_id
   const ref = (match[3]) ? match[3] : 'R#' + waktu();
   let prabyr = await digiflazz.transaksi(match[1],match[2],ref);
@@ -36,28 +36,28 @@ bot.onText(/\/trx (.+)\s+(.+)\s+(.+)/, (msg, match) => {
   bot.sendMessage(chatId, prabyr);
 });
 
-bot.onText(/\/cek (.+)/, (msg, match) => {
+bot.onText(/\/cek (.+)/, async (msg, match) => {
   let cekPasca = await digiflazz.transaksi('sku', 'tujuan', 'ref_id', 'CEK');
   const chatId = msg.chat.id;
   const resp = match[1];
   bot.sendMessage(chatId, cekPasca);
 });
 
-bot.onText(/\/bayar (.+)/, (msg, match) => {
+bot.onText(/\/bayar (.+)/, async (msg, match) => {
   let byrPasca = await digiflazz.transaksi('sku', 'tujuan', 'ref_id', 'BAYAR');
   const chatId = msg.chat.id;
   const resp = match[1];
   bot.sendMessage(chatId, byrPasca);
 });
 
-bot.onText(/\/status (.+)/, (msg, match) => {
+bot.onText(/\/status (.+)/, async (msg, match) => {
   let statusPasca = await digiflazz.transaksi('sku', 'tujuan', 'ref_id', 'STATUS');
   const chatId = msg.chat.id;
   const resp = match[1];
   bot.sendMessage(chatId, statusPasca);
 });
 
-bot.on('message', (msg) => {
+bot.on('message', async (msg) => {
   const chatId = msg.chat.id;
   const messageText = msg.text;
   if (messageText === '/menu') {
