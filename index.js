@@ -8,12 +8,15 @@ const token = process.env.TOKEN;
 const bot = new TelegramBot(token, {polling: true});
 const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ?? 8081;
-bot.setWebHook(`${host}/bot${token}`);
 const app = express();
+bot.setWebHook(`${host}/bot${token}`);
 app.use(express.json());
 app.post(`/bot${token}`, (req, res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
+});
+app.get(`/`, (req, res) => {
+  res.json({host,port});
 });
 app.listen(port, host, () => {
   console.info(`Server is listening on ${port}`);
