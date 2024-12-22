@@ -47,12 +47,13 @@ bot.setMyCommands([
     { command: '/status', description: 'Tampilkan status pasca bayar' },
     { command: '/ceksaldo', description: 'Periksa saldo.' },
     { command: '/harga', description: 'Tampilkan daftar harga.' }
-])
+]);
+
 bot.onText(/\/deposit (.*?)\s+(.*?)\s+(.*?)/, async (msg, match) => {
   // nominal, bank, a/n
   let deposit = await digiflazz.deposit(match[1],match[2],match[3]);
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, deposit);
+  bot.sendMessage(chatId, JSON.stringify(match));
 });
 
 bot.onText(/\/trx (.+)\s+(.+)\s+(.+)/, async (msg, match) => {
@@ -60,7 +61,7 @@ bot.onText(/\/trx (.+)\s+(.+)\s+(.+)/, async (msg, match) => {
   const ref = (match[3]) ? match[3] : 'R#' + waktu();
   let prabyr = await digiflazz.transaksi(match[1],match[2],ref);
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, prabyr);
+  bot.sendMessage(chatId, JSON.stringify(match));
 });
 
 bot.onText(/\/cek (.+)/, async (msg, match) => {
@@ -92,10 +93,10 @@ bot.on('message', async (msg) => {
   }
   if (messageText === '/ceksaldo') {
     let saldo = await digiflazz.cekSaldo();
-    bot.sendMessage(chatId, 'Saldo: ' + JSON.stringify(saldo));
+    bot.sendMessage(chatId, 'Saldo: Rp' + JSON.stringify(saldo).deposit);
   }
   if (messageText === '/harga') {
     let harga = await digiflazz.daftarHarga();
-    bot.sendMessage(chatId, harga);
+    bot.sendMessage(chatId, JSON.stringify(harga));
   }
 });
