@@ -2,6 +2,8 @@ const express = require('express');
 const os = require('os');
 const TelegramBot = require('node-telegram-bot-api');
 const Digiflazz = require('digiflazz');
+const commands = require('./commands.js');
+const { toRp, waktu } = require('./utils.js');
 const digiflazz = new Digiflazz(process.env.USR, process.env.API);
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TOKEN;
@@ -24,32 +26,7 @@ app.listen(port, host, () => {
   console.info(`Server is listening on ${port}`);
 });
 
-const waktu =()=> {
-  const date = new Date();
-  const [month, day, year] = [
-    date.getMonth(),
-    date.getDate(),
-    date.getFullYear(),
-  ];
-  const [hour, minutes, seconds] = [
-    date.getHours(),
-    date.getMinutes(),
-    date.getSeconds(),
-  ];
-  return day+month+year+hour+minutes+seconds
-}
-
-bot.setMyCommands([
-    { command: '/menu', description: 'Main Menu' },
-    { command: '/deposit', description: 'Isi saldo. { nominal, bank, a/n }' },
-    { command: '/trx', description: 'Transaksi prabayar.' },
-    { command: '/cek', description: 'Periksa inquiry pascabayar.' },
-    { command: '/bayar', description: 'Bayar transaksi pascabayar.' },
-    { command: '/status', description: 'Tampilkan status pasca bayar' },
-    { command: '/ceksaldo', description: 'Periksa saldo.' },
-    { command: '/harga', description: 'Tampilkan daftar harga.' }
-]);
-
+bot.setMyCommands(commands);
 bot.onText(/\/deposit (.*?) (.*?) (.*?)/, async (msg, match) => {
   // nominal, bank, a/n
   let deposit = await digiflazz.deposit(match[1],match[2],match[3]);
@@ -84,23 +61,25 @@ bot.onText(/\/status (.+) (.+) (.+)/, async (msg, match) => {
 });
 
 bot.on('message', async (msg) => {
-  const chatId = msg.chat.id;
-  const messageText = msg.text;
-  if (messageText === '/menu') {
-    bot.sendMessage(chatId, 'Welcome to the ppob!');
+  let resMsg = null;
+  switch(msg.text){
+    case '/menu':
+      resMsg = 'Welcome to the ppob!';
+    break;
+    case '/harga':
+      let harga = await digiflazz.daftarHarga();
+      resMsg = ;
+    break;
+    case '/ceksaldo':
+      let saldo = await digiflazz.cekSaldo();
+      resMsg = ;
+    break;
+    case '/ip':
+      const ni = os.networkInterfaces();
+      resMsg = JSON.stringify(ni);
+    break;
   }
-  if (messageText === '/ip') {
-    const ni = os.networkInterfaces();
-    bot.sendMessage(chatId, JSON.stringify(ni));
-  }
-  if (messageText === '/ceksaldo') {
-    let saldo = await digiflazz.cekSaldo();
-    bot.sendMessage(chatId, 'Saldo: Rp' + saldo.deposit);
-  }
-  if (messageText === '/harga') {
-    let harga = await digiflazz.daftarHarga();
-    bot.sendMessage(chatId, 'List: ' + JSON.stringify(harga));
-  }
+  bot.sendMessage(msg.chat.id, resMsg);
 });
 
 bot.on('polling_error', (err) => {
