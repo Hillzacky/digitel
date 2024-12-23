@@ -29,8 +29,8 @@ app.listen(port, host, () => {
 bot.setMyCommands(commands);
 bot.onText(/\/deposit (.*?) (.*?) (.*?)/, async (msg, match) => {
   // nominal, bank, a/n
-  let deposit = await digiflazz.deposit(match[1],match[2],match[3]);
-  const chatId = msg.chat.id;
+  let deposit = await digiflazz.deposit(match[1],match[2].toUpperCase(),match[3].toUpperCase());
+  const chatId = msg.chat.id;console.info(match);
   bot.sendMessage(chatId, JSON.stringify(match));
 });
 
@@ -38,7 +38,7 @@ bot.onText(/\/trx (.+) (.+) (.+)/, async (msg, match) => {
   // sku, tujuan, ref_id
   const ref = (match[3]) ? match[3] : 'R#' + waktu();
   let prabyr = await digiflazz.transaksi(match[1],match[2],ref);
-  const chatId = msg.chat.id;
+  const chatId = msg.chat.id;console.info(match);
   bot.sendMessage(chatId, 'Match: ' + JSON.stringify(match));
 });
 
