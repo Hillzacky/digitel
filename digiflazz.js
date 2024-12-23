@@ -72,7 +72,7 @@ class Digiflazz {
       body: {
         username: this._user,
         amount,
-        Bank: bank,
+        bank: bank,
         owner_name: name,
         sign: crypto.createHash('md5').update(`${this._user}${this._key}deposit`).digest('hex')
       },
@@ -134,7 +134,6 @@ class Digiflazz {
       },
       json: true
     };
-
     return rp(options)
       .then(function (resp) {
         return resp.data;
@@ -145,7 +144,6 @@ class Digiflazz {
   }
 
   static webhook(middle) {
-
     return function middleHandler(req, res, next) {
       middle.onWebhook(req, res, next);
       next();
