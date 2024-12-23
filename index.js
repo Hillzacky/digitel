@@ -75,7 +75,7 @@ bot.on('message', async (msg) => {
         Key.callback('Daftar Harga Prepaid', '/harga1'),
         Key.callback('Daftar Harga Pasca', '/harga2'),
         Key.callback('Cek IP', '/ip')
-      ],{ columns: 2 }).inline()
+      ],{ columns: 2 }).reply()
       resMsg = 'PPOB by Copysland';
     break;
     case '/harga1':
