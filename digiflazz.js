@@ -123,6 +123,27 @@ class Digiflazz {
       });
   }
 
+  inqPln(customer) {
+    const options = {
+      method: 'POST',
+      uri: `${this._endpoint}/inquiry-pln`,
+      body: {
+        username: this._user,
+        customer_no: customer,
+        sign: crypto.createHash('md5').update(`${this._user}${this._key}${refID}`).digest('hex')
+      },
+      json: true
+    };
+
+    return rp(options)
+      .then(function (resp) {
+        return resp.data;
+      })
+      .catch(function (err) {
+        throw parseError(err);
+      });
+  }
+
   static webhook(middle) {
 
     return function middleHandler(req, res, next) {
