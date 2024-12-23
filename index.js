@@ -1,7 +1,7 @@
 const express = require('express');
 const os = require('os');
 const TelegramBot = require('node-telegram-bot-api');
-const Digiflazz = require('digiflazz');
+const Digiflazz = require('./digiflazz.js');
 const commands = require('./commands.js');
 const { toRp, waktu } = require('./utils.js');
 const digiflazz = new Digiflazz(process.env.USR, process.env.API);
