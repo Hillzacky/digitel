@@ -28,6 +28,7 @@ app.listen(port, host, () => {
 
 bot.setMyCommands(commands);
 bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.]+)/, async (msg, group) => {
+	bot.sendMessage(msg.chat.id, JSON.stringify(group));
   // sku, tujuan, ref_id
   let res=null,
   cmd=group[0].toUpperCase(),
