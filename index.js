@@ -33,7 +33,6 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
   cmd=group[1].toUpperCase(),
   trx=group[2].split(".", 3),
   rid=(!trx[2]) ? 'R#'+waktu() : trx[2];
-	bot.sendMessage(msg.chat.id, JSON.stringify(trx));
   switch(cmd){
     case 'TRX':
       res=await digiflazz.transaksi(trx[0],trx[1],rid);
