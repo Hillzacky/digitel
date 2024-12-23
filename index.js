@@ -27,37 +27,38 @@ app.listen(port, host, () => {
 });
 
 bot.setMyCommands(commands);
-bot.onText(/\/deposit (.*?) (.*?) (.*?)/, async (msg, match) => {
-  // nominal, bank, a/n
-  let deposit = await digiflazz.deposit(match[1],match[2].toUpperCase(),match[3].toUpperCase());
-  const chatId = msg.chat.id;console.info(match);
-  bot.sendMessage(chatId, JSON.stringify(match));
-});
-
-bot.onText(/\/trx (.+) (.+) (.+)/, async (msg, match) => {
+bot.onText(/([a-zA-Z].{3,3}+) (.+)/, async (msg, match) => {
   // sku, tujuan, ref_id
-  const ref = (match[3]) ? match[3] : 'R#' + waktu();
-  let prabyr = await digiflazz.transaksi(match[1],match[2],ref);
-  const chatId = msg.chat.id;console.info(match);
-  bot.sendMessage(chatId, 'Match: ' + JSON.stringify(match));
-});
-
-bot.onText(/\/cek (.+) (.+) (.+)/, async (msg, match) => {
-  let cekPasca = await digiflazz.transaksi(match[1],match[2],match[3], 'CEK');
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, cekPasca);
-});
-
-bot.onText(/\/bayar (.+) (.+) (.+)/, async (msg, match) => {
-  let byrPasca = await digiflazz.transaksi(match[1],match[2],match[3], 'BAYAR');
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, byrPasca);
-});
-
-bot.onText(/\/status (.+) (.+) (.+)/, async (msg, match) => {
-  let statusPasca = await digiflazz.transaksi(match[1],match[2],match[3], 'STATUS');
-  const chatId = msg.chat.id;
-  bot.sendMessage(chatId, statusPasca);
+  let res=null,
+  cmd=match[0].toUpperCase(),
+  trx=match.split(".", 3),
+  rid=(trx[2]) ? trx[2] : 'R#'+waktu();
+  switch(cmd){
+    case 'TRX':
+      res=await digiflazz.transaksi(trx[0],trx[1],rid);
+    break;
+    case 'CEK':
+      res=await digiflazz.transaksi(trx[0],trx[1],rid,'CEK');
+    break;
+    case 'BYR':
+      res=await digiflazz.transaksi(trx[0],trx[1],rid,'BAYAR');
+    break;
+    case 'STS':
+      res=await digiflazz.transaksi(trx[0],trx[1],rid,'STATUS');
+    break;
+    case 'PLN':
+      res=await digiflazz.validateInqPln(trx[0]);
+    break;
+    case 'ISI':
+					// nominal, bank, a/n
+      res=await digiflazz.deposit(trx[0],trx[1].toUpperCase(),trx[2].toUpperCase());
+    break;
+    default:
+      res='404 Command not found.';
+    break;
+  }
+  console.info(res);
+  bot.sendMessage(msg.chat.id, JSON.stringify(res));
 });
 
 bot.on('message', async (msg) => {
