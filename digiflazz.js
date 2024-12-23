@@ -38,12 +38,13 @@ class Digiflazz {
         throw parseError(err);
       });
   }
-
-  daftarHarga() {
+  // prepaid, pasca
+  daftarHarga(cmd='prepaid') {
     const options = {
       method: 'POST',
       uri: `${this._endpoint}/price-list`,
       body: {
+        cmd: cmd,
         username: this._user,
         sign: crypto.createHash('md5').update(`${this._user}${this._key}pricelist`).digest('hex')
       },
