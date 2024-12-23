@@ -32,7 +32,7 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
   let res=null,
   cmd=group[1].toUpperCase(),
   trx=group[2].split(".", 3),
-  rid=(trx[2]) ? trx[2] : 'R#'+waktu();
+  rid=(!trx[2]) ? 'R#'+waktu() : trx[2];
 	bot.sendMessage(msg.chat.id, JSON.stringify(trx));
   switch(cmd){
     case 'TRX':
@@ -48,10 +48,10 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
       res=await digiflazz.transaksi(trx[0],trx[1],rid,'STATUS');
     break;
     case 'PLN':
-      res=await digiflazz.validateInqPln(trx[0]);
+      res=await digiflazz.validateInqPln(group[2]);
     break;
     case 'ISI':
-			// nominal, bank, a/n
+    // nominal, bank, a/n
       res=await digiflazz.deposit(trx[0],trx[1].toUpperCase(),trx[2].toUpperCase());
     break;
     default:
@@ -65,10 +65,10 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
 bot.on('message', async (msg) => {
   let resMsg = null;
   switch(msg.text){
-  	case '/start':
+    case '/start':
       resMsg = 'Welcome to the ppob!';
     break;
-  	case '/menu':
+    case '/menu':
       resMsg = 'belum';
     break;
     case '/harga-pre':
