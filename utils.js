@@ -1,4 +1,14 @@
-
+const objParse =(obj)=>{
+  let str = '';
+  for (i=0;i<obj.length;i++) {
+    for (const [k, v] of Object.entries(obj[i])) {
+      key = k.replace("_"," ");
+      str+=`${key}: ${v}`;
+    }
+    str+='-----------------------';
+  }
+  return str;
+}
 const toRp = (num)=>{
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
