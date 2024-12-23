@@ -66,9 +66,13 @@ bot.on('message', async (msg) => {
     case '/menu':
       resMsg = 'Welcome to the ppob!';
     break;
-    case '/harga':
-      let harga = await digiflazz.daftarHarga();
-      resMsg = JSON.stringify(harga);
+    case '/harga-pre':
+      let plpr = await digiflazz.daftarHarga('prepaid');
+      resMsg = JSON.stringify(plpr);
+    break;
+    case '/harga-pas':
+      let plpa = await digiflazz.daftarHarga('pasca');
+      resMsg = JSON.stringify(plpa);
     break;
     case '/ceksaldo':
       let saldo = await digiflazz.cekSaldo();
