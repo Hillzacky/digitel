@@ -31,7 +31,7 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.]+)/, async (msg, match) => {
   // sku, tujuan, ref_id
   let res=null,
   cmd=match[0].toUpperCase(),
-  trx=match.split(".", 3),
+  trx=match[1].split(".", 3),
   rid=(trx[2]) ? trx[2] : 'R#'+waktu();
   switch(cmd){
     case 'TRX':
@@ -50,7 +50,7 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.]+)/, async (msg, match) => {
       res=await digiflazz.validateInqPln(trx[0]);
     break;
     case 'ISI':
-					// nominal, bank, a/n
+			// nominal, bank, a/n
       res=await digiflazz.deposit(trx[0],trx[1].toUpperCase(),trx[2].toUpperCase());
     break;
     default:
@@ -64,8 +64,11 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.]+)/, async (msg, match) => {
 bot.on('message', async (msg) => {
   let resMsg = null;
   switch(msg.text){
-    case '/menu':
+  	case '/start':
       resMsg = 'Welcome to the ppob!';
+    break;
+  	case '/menu':
+      resMsg = 'belum';
     break;
     case '/harga-pre':
       let plpr = await digiflazz.daftarHarga('prepaid');
