@@ -1,5 +1,5 @@
 /**
- *
+ * Source : https://github.com/apriady/digiflazz
 **/
 class InvalidSignature extends Error {
   constructor(message, data = null) {
