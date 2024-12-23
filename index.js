@@ -70,11 +70,11 @@ bot.on('message', async (msg) => {
     case '/menu':
       resMsg = 'belum';
     break;
-    case '/harga-pre':
+    case '/harga1':
       let plpr = await digiflazz.daftarHarga('prepaid');
       resMsg = JSON.stringify(plpr);
     break;
-    case '/harga-pas':
+    case '/harga2':
       let plpa = await digiflazz.daftarHarga('pasca');
       resMsg = JSON.stringify(plpa);
     break;
