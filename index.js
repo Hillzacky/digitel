@@ -1,6 +1,7 @@
 const express = require('express');
 const os = require('os');
 const TelegramBot = require('node-telegram-bot-api');
+const { Keyboard, Key } = require('telegram-keyboard');
 const Digiflazz = require('./digiflazz.js');
 const commands = require('./commands.js');
 const { toRp, waktu } = require('./utils.js');
@@ -68,7 +69,14 @@ bot.on('message', async (msg) => {
       resMsg = 'Welcome to the ppob!';
     break;
     case '/menu':
-      resMsg = 'belum';
+      const keyboard = Keyboard.make([
+        Key.callback('Cek Saldo', '/ceksaldo'),
+        Key.callback('Transaksi', '/help'),
+        Key.callback('Daftar Harga Prepaid', '/harga1'),
+        Key.callback('Daftar Harga Pasca', '/harga2'),
+        Key.callback('Cek IP', '/ip')
+      ],{ columns: 2 }).inline()
+      resMsg = 'PPOB by Copysland';
     break;
     case '/harga1':
       let plpr = await digiflazz.daftarHarga('prepaid');
