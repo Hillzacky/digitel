@@ -68,11 +68,11 @@ bot.on('message', async (msg) => {
     break;
     case '/harga':
       let harga = await digiflazz.daftarHarga();
-      resMsg = ;
+      resMsg = JSON.stringify(harga);
     break;
     case '/ceksaldo':
       let saldo = await digiflazz.cekSaldo();
-      resMsg = ;
+      resMsg = 'Saldo: ' + toRp(saldo.deposit);
     break;
     case '/ip':
       const ni = os.networkInterfaces();
