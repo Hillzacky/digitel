@@ -27,11 +27,11 @@ app.listen(port, host, () => {
 });
 
 bot.setMyCommands(commands);
-bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.]+)/, async (msg, match) => {
+bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.]+)/, async (msg, group) => {
   // sku, tujuan, ref_id
   let res=null,
-  cmd=match[0].toUpperCase(),
-  trx=match[1].split(".", 3),
+  cmd=group[0].toUpperCase(),
+  trx=group[1].split(".", 3),
   rid=(trx[2]) ? trx[2] : 'R#'+waktu();
   switch(cmd){
     case 'TRX':
