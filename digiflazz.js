@@ -123,7 +123,7 @@ class Digiflazz {
       });
   }
 
-  inqPln(customer) {
+  validateInqPln(customer) {
     const options = {
       method: 'POST',
       uri: `${this._endpoint}/inquiry-pln`,
