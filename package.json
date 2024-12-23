@@ -14,11 +14,20 @@
     "digiflazz",
     "api"
   ],
-  "author": "Hillzacky",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hillzacky/digitel.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hillzacky/digitel/issues"
+  },
+  "homepage": "https://github.com/Hillzacky/digitel#readme",
+  "author": "Hillzacky <hilmansyah.amd.kom@icloud.com>",
   "license": "MIT",
   "dependencies": {
     "express": "^4.21.2",
-    "digiflazz": "^1.1.1",
-    "node-telegram-bot-api": "^0.66.0"
+    "node-telegram-bot-api": "^0.66.0",
+    "request": "^2.48.12",
+    "request-promise-native": "^1.0.9"
   }
 }
