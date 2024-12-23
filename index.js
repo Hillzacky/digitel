@@ -63,13 +63,13 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
 });
 
 bot.on('message', async (msg) => {
-  let resMsg = null;
+  let resMsg = null, keyMsg = null;
   switch(msg.text){
     case '/start':
       resMsg = 'Welcome to the ppob!';
     break;
     case '/menu':
-      const keyboard = Keyboard.make([
+      keyMsg = Keyboard.make([
         Key.callback('Cek Saldo', '/ceksaldo'),
         Key.callback('Transaksi', '/help'),
         Key.callback('Daftar Harga Prepaid', '/harga1'),
@@ -81,21 +81,25 @@ bot.on('message', async (msg) => {
     case '/harga1':
       let plpr = await digiflazz.daftarHarga('prepaid');
       resMsg = JSON.stringify(plpr);
+      keyMsg = {};
     break;
     case '/harga2':
       let plpa = await digiflazz.daftarHarga('pasca');
       resMsg = JSON.stringify(plpa);
+      keyMsg = {};
     break;
     case '/ceksaldo':
       let saldo = await digiflazz.cekSaldo();
       resMsg = 'Saldo: ' + toRp(saldo.deposit);
+      keyMsg = {};
     break;
     case '/ip':
       const ni = os.networkInterfaces();
       resMsg = JSON.stringify(ni);
+      keyMsg = {};
     break;
   }
-  bot.sendMessage(msg.chat.id, resMsg);
+  bot.sendMessage(msg.chat.id, resMsg, keyMsg);
 });
 
 bot.on('polling_error', (err) => {
