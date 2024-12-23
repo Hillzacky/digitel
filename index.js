@@ -4,7 +4,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const { Keyboard, Key } = require('telegram-keyboard');
 const Digiflazz = require('./digiflazz.js');
 const commands = require('./commands.js');
-const { toRp, waktu } = require('./utils.js');
+const { toRp, waktu, objParse } = require('./utils.js');
 const digiflazz = new Digiflazz(process.env.USR, process.env.API);
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TOKEN;
@@ -59,7 +59,7 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
     break;
   }
   console.info(res);
-  bot.sendMessage(msg.chat.id, JSON.stringify(res));
+  bot.sendMessage(msg.chat.id, objParse(res));
 });
 
 bot.on('message', async (msg) => {
@@ -70,12 +70,12 @@ bot.on('message', async (msg) => {
     break;
     case '/menu':
       keyMsg = Keyboard.make([
-        Key.callback('Cek Saldo', '/ceksaldo'),
-        Key.callback('Transaksi', '/help'),
-        Key.callback('Daftar Harga Prepaid', '/harga1'),
-        Key.callback('Daftar Harga Pasca', '/harga2'),
-        Key.callback('Cek IP', '/ip')
-      ],{ columns: 2 }).reply()
+        '/ceksaldo',
+        '/help',
+        '/harga1',
+        '/harga2',
+        '/ip'
+      ],{ columns: 2 }).inline();
       resMsg = 'PPOB by Copysland';
     break;
     case '/harga1':
