@@ -75,7 +75,7 @@ bot.on('message', async (msg) => {
         '/harga1',
         '/harga2',
         '/ip'
-      ],{ columns: 2 }).inline();
+      ],{ columns: 2 }).reply();
       resMsg = 'PPOB by Copysland';
     break;
     case '/harga1':
@@ -95,7 +95,7 @@ bot.on('message', async (msg) => {
     break;
     case '/ip':
       const ni = os.networkInterfaces();
-      resMsg = JSON.stringify(ni);
+      resMsg = objParse(ni);
       keyMsg = {};
     break;
   }
