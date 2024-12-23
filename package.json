@@ -27,6 +27,7 @@
   "dependencies": {
     "express": "^4.21.2",
     "node-telegram-bot-api": "^0.66.0",
+    "telegram-keyboard": "^2.3.5",
     "request": "^2.48.12",
     "request-promise-native": "^1.0.9"
   }
