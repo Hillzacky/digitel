@@ -3,6 +3,7 @@ const os = require('os');
 const TelegramBot = require('node-telegram-bot-api');
 const { Keyboard, Key } = require('telegram-keyboard');
 const Digiflazz = require('./digiflazz.js');
+const priceList = require('./digiflazz-price.js');
 const commands = require('./commands.js');
 const { toRp, waktu, objParse, objParses } = require('./utils.js');
 const digiflazz = new Digiflazz(process.env.USR, process.env.API);
@@ -30,6 +31,9 @@ app.get(`/prepaid`, async(req, res) => {
 app.get(`/pasca`, async(req, res) => {
   let plpa = await digiflazz.daftarHarga('pasca');
   res.json(plpa);
+});
+app.get(`/pricelist`, async(req, res) => {
+  res.send(priceList(digiflazz));
 });
 app.listen(port, host, () => {
   console.info(`Server is listening on ${port}`);
@@ -75,8 +79,7 @@ bot.on('message', async (msg) => {
   Keyboard.make([
         '/ceksaldo',
         '/help',
-        '/harga1',
-        '/harga2',
+        '/harga',
         '/ip'
   ],{ columns: 2 }).reply();
   switch(msg.text){
@@ -86,25 +89,16 @@ bot.on('message', async (msg) => {
     case '/menu':
       resMsg = 'PPOB by Copysland';
     break;
-    case '/harga1':
-      let plpr = await digiflazz.daftarHarga('prepaid');
-      resMsg = objParses(plpr);
-      
-    break;
-    case '/harga2':
-      let plpa = await digiflazz.daftarHarga('pasca');
-      resMsg = objParses(plpa);
-      
+    case '/harga':
+      resMsg = url + '/pricelist';
     break;
     case '/ceksaldo':
       let saldo = await digiflazz.cekSaldo();
       resMsg = 'Saldo: ' + toRp(saldo.deposit);
-      
     break;
     case '/ip':
       const ni = os.networkInterfaces();
       resMsg = objParse(ni);
-      
     break;
   }
   bot.sendMessage(msg.chat.id, resMsg);
