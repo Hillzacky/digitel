@@ -3,9 +3,9 @@ const objParse =(obj)=>{
   for (i=0;i<obj.length;i++) {
     for (const [k, v] of Object.entries(obj[i])) {
       key = k.replace("_"," ");
-      str+=`${key}: ${v}`;
+      str+=`${key}: ${v}\n`;
     }
-    str+='-----------------------';
+    str+='-----------------------\n';
   }
   return str;
 }
