@@ -1,5 +1,5 @@
 const objParse =(obj)=>{
-  let str = '';
+  let str = '', key = '';
   for (const [k, v] of Object.entries(obj)) {
     key = k.replace("_"," ");
     str+=`${key}: ${v}\n`;
@@ -7,7 +7,7 @@ const objParse =(obj)=>{
   return str;
 }
 const objParses =(obj)=>{
-  let str = '';
+  let str = '', key = '';
   for (i=0;i<obj.length;i++) {
     for (const [k, v] of Object.entries(obj[i])) {
       key = k.replace("_"," ");
@@ -38,5 +38,5 @@ const waktu =()=> {
   return day+month+year+hour+minutes+seconds
 }
 module.exports = {
-  toRp, waktu
+  toRp, waktu, objParse, objParses
 }
