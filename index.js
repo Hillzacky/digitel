@@ -23,6 +23,14 @@ app.post(`/bot${token}`, (req, res) => {
 app.get(`/`, (req, res) => {
   res.json({host,port});
 });
+app.get(`/prepaid`, (req, res) => {
+  let plpr = await digiflazz.daftarHarga('prepaid');
+  res.json(plpr);
+});
+app.get(`/pasca`, (req, res) => {
+  let plpa = await digiflazz.daftarHarga('pasca');
+  res.json(plpa);
+});
 app.listen(port, host, () => {
   console.info(`Server is listening on ${port}`);
 });
