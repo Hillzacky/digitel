@@ -4,7 +4,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const { Keyboard, Key } = require('telegram-keyboard');
 const Digiflazz = require('./digiflazz.js');
 const commands = require('./commands.js');
-const { toRp, waktu, objParse } = require('./utils.js');
+const { toRp, waktu, objParse, objParses } = require('./utils.js');
 const digiflazz = new Digiflazz(process.env.USR, process.env.API);
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TOKEN;
