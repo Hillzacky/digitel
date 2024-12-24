@@ -1,4 +1,6 @@
-async function pricelist(df) {
+module.exports = async(df)=> {
+  const pre = await df.daftarHarga('prepaid');
+  const pas = await df.daftarHarga('pas');
   let t = `<!Doctype html>
 <html lang="en">
   <head>
@@ -21,16 +23,32 @@ async function pricelist(df) {
           <table class="table table-striped">
             <thead>
               <tr>
-                <th scope="row">${}</th>
-                <td>${}</td>
+                <th scope="row">ProductName</th>
+                <td>Category</td>
+                <td>Brand</td>
+                <td>Type</td>
+                <td>SellerName</td>
+                <td>Price</td>
+                <td>BuyerSku</td>
+                <td>BuyerStat</td>
+                <td>SellerStat</td>
+                <td>Unlimited</td>
+                <td>Stock</td>
+                <td>Multi</td>
+                <td>Start</td>
+                <td>End</td>
+                <td>Desc</td>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th scope="row">${}</th>
-                <td>${}</td>
-              </tr>
-            </tbody>
+            <tbody>`;
+              for(i=0;i<pre.length;i++){
+              t+=`<tr>`
+                for(const [k,v] of Object.entries(pre[i])){
+                  t+=`<td>${v}</td>`
+                }
+              t+=`</tr>`
+              }
+            t+=`</tbody>
           </table>
         </div>
       </div>
@@ -39,16 +57,27 @@ async function pricelist(df) {
           <table class="table table-striped">
             <thead>
               <tr>
-                <th scope="row">${}</th>
-                <td>${}</td>
+                <th scope="row">ProductName</th>
+                <td>Category</td>
+                <td>Brand</td>
+                <td>Seller</td>
+                <td>Admin</td>
+                <td>Komisi</td>
+                <td>BuyerSku</td>
+                <td>BuyerStat</td>
+                <td>SellerStat</td>
+                <td>Desc</td>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th scope="row">${}</th>
-                <td>${}</td>
-              </tr>
-            </tbody>
+            <tbody>`;
+              for(i=0;i<pas.length;i++){
+              t+=`<tr>`
+                for(const [k,v] of Object.entries(pas[i])){
+                  t+=`<td>${v}</td>`
+                }
+              t+=`</tr>`
+              }
+            t+=`</tbody>
           </table>
         </div>
       </div>
