@@ -32,7 +32,9 @@ app.get(`/pasca`, async(req, res) => {
   let plpa = await digiflazz.daftarHarga('pasca');
   res.json(plpa);
 });
-app.get(`/pricelist`, async(req, res) => {
+app.get(`/pricelist`, async(req, res, next) => {
+  res.set('Content-Type', 'text/html');
+  // res.type('.html');
   res.send(priceList(digiflazz));
 });
 app.listen(port, host, () => {
