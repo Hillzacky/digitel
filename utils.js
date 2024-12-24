@@ -1,6 +1,6 @@
 const objParse =(obj)=>{
   let str = '';
-  for (const [k, v] of Object.entries(obj[i])) {
+  for (const [k, v] of Object.entries(obj)) {
     key = k.replace("_"," ");
     str+=`${key}: ${v}\n`;
   }
