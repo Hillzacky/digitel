@@ -63,43 +63,43 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
 });
 
 bot.on('message', async (msg) => {
-  let resMsg = null, keyMsg = {};
-  switch(msg.text){
-    case '/start':
-      resMsg = 'Welcome to the ppob!';
-    break;
-    case '/menu':
-      keyMsg = Keyboard.make([
+  let resMsg = null;
+  Keyboard.make([
         '/ceksaldo',
         '/help',
         '/harga1',
         '/harga2',
         '/ip'
-      ],{ columns: 2 }).reply();
+  ],{ columns: 2 }).reply();
+  switch(msg.text){
+    case '/start':
+      resMsg = 'Welcome to the ppob!';
+    break;
+    case '/menu':
       resMsg = 'PPOB by Copysland';
     break;
     case '/harga1':
       let plpr = await digiflazz.daftarHarga('prepaid');
       resMsg = objParses(plpr);
-      keyMsg = {};
+      
     break;
     case '/harga2':
       let plpa = await digiflazz.daftarHarga('pasca');
       resMsg = objParses(plpa);
-      keyMsg = {};
+      
     break;
     case '/ceksaldo':
       let saldo = await digiflazz.cekSaldo();
       resMsg = 'Saldo: ' + toRp(saldo.deposit);
-      keyMsg = {};
+      
     break;
     case '/ip':
       const ni = os.networkInterfaces();
       resMsg = objParse(ni);
-      keyMsg = {};
+      
     break;
   }
-  bot.sendMessage(msg.chat.id, resMsg, keyMsg);
+  bot.sendMessage(msg.chat.id, resMsg);
 });
 
 bot.on('polling_error', (err) => {
