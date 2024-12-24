@@ -80,12 +80,12 @@ bot.on('message', async (msg) => {
     break;
     case '/harga1':
       let plpr = await digiflazz.daftarHarga('prepaid');
-      resMsg = JSON.stringify(plpr);
+      resMsg = objParses(plpr);
       keyMsg = {};
     break;
     case '/harga2':
       let plpa = await digiflazz.daftarHarga('pasca');
-      resMsg = JSON.stringify(plpa);
+      resMsg = objParses(plpa);
       keyMsg = {};
     break;
     case '/ceksaldo':
