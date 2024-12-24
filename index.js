@@ -23,11 +23,11 @@ app.post(`/bot${token}`, (req, res) => {
 app.get(`/`, (req, res) => {
   res.json({host,port});
 });
-app.get(`/prepaid`, (req, res) => {
+app.get(`/prepaid`, async(req, res) => {
   let plpr = await digiflazz.daftarHarga('prepaid');
   res.json(plpr);
 });
-app.get(`/pasca`, (req, res) => {
+app.get(`/pasca`, async(req, res) => {
   let plpa = await digiflazz.daftarHarga('pasca');
   res.json(plpa);
 });
