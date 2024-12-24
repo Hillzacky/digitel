@@ -1,4 +1,4 @@
-module.exports.priceList = async(df) => {
+async function priceList (df) {
   const pre = await df.daftarHarga('prepaid');
   const pas = await df.daftarHarga('pas');
   let t = `<!Doctype html>
@@ -87,3 +87,4 @@ module.exports.priceList = async(df) => {
 </html>`;
   return t;
 }
+module.exports = { priceList }
