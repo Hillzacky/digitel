@@ -1,4 +1,4 @@
-function template(pre,pas){
+function priceList(){
   let t = `<!Doctype html>
 <html lang="en">
   <head>
@@ -38,9 +38,7 @@ function template(pre,pas){
                 <td scope="row">Desc</td>
               </tr>
             </thead>
-            <tbody>`;
-            t+=setTable(pre);
-            t+=`</tbody>
+            <tbody id="prep"></tbody>
           </table>
         </div>
       </div>
@@ -61,14 +59,35 @@ function template(pre,pas){
                 <th scope="row">Desc</th>
               </tr>
             </thead>
-            <tbody>`;
-            t+=setTable(pas);
-            t+=`</tbody>
+            <tbody id="pasc"></tbody>
           </table>
         </div>
       </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script>
+      if (document.readyState === 'complete') {
+        setData();
+      } else {
+        document.addEventListener("DOMContentLoaded", setData);
+      }
+      async function setData(){
+        const [pre,pas] = await Promise.all([ fetch('/prepaid'),fetch('/pasca') ]);
+        setTable(pre,'prep')
+        setTable(pas,'pasc')
+      }
+      async function setTable(r,id){
+        let t='', c=await r.json();
+        for(i=0;i<c.length;i++){
+          t+='<tr>'
+            for(const [k,v] of Object.entries(c[i])){
+              t+='<td>'+v+'</td>'
+            }
+          t+='</tr>'
+        };
+        document.getElementById(id).innerHTML = t;
+      }
+    </script>
   </body>
 </html>`;
   return t;
@@ -86,7 +105,7 @@ function setTable(c){
   return t;
 }
 
-async function priceList (df) {
+async function priceListjs (df) {
   const p1 = df.daftarHarga('prepaid');
   const p2 = df.daftarHarga('pas');
   const [pre,pas] = await Promise.all([p1,p2])
