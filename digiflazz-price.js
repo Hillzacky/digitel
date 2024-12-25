@@ -1,7 +1,4 @@
-async function priceList (df) {
-  const p1 = df.daftarHarga('prepaid');
-  const p2 = df.daftarHarga('pas');
-  const [pre,pas] = await Promise.all([p1,p2])
+function template(pre,pas){
   let t = `<!Doctype html>
 <html lang="en">
   <head>
@@ -25,11 +22,11 @@ async function priceList (df) {
             <thead>
               <tr>
                 <th scope="row">ProductName</th>
-                <td scope="row">Category</td>
-                <td scope="row">Brand</td>
-                <td scope="row">Type</td>
+                <th scope="row">Category</th>
+                <th scope="row">Brand</th>
+                <th scope="row">Type</th>
                 <td scope="row">SellerName</td>
-                <td scope="row">Price</td>
+                <th scope="row">Price</th>
                 <td scope="row">BuyerSku</td>
                 <td scope="row">BuyerStat</td>
                 <td scope="row">SellerStat</td>
@@ -42,13 +39,7 @@ async function priceList (df) {
               </tr>
             </thead>
             <tbody>`;
-              for(i=0;i<pre.length;i++){
-              t+=`<tr>`
-                for(const [k,v] of Object.entries(pre[i])){
-                  t+=`<td>${v}</td>`
-                }
-              t+=`</tr>`
-              }
+            t+=setTable(pre);
             t+=`</tbody>
           </table>
         </div>
@@ -59,25 +50,19 @@ async function priceList (df) {
             <thead>
               <tr>
                 <th scope="row">ProductName</th>
-                <td scope="row">Category</td>
-                <td scope="row">Brand</td>
-                <td scope="row">Seller</td>
-                <td scope="row">Admin</td>
-                <td scope="row">Komisi</td>
-                <td scope="row">BuyerSku</td>
-                <td scope="row">BuyerStat</td>
-                <td scope="row">SellerStat</td>
-                <td scope="row">Desc</td>
+                <th scope="row">Category</th>
+                <th scope="row">Brand</th>
+                <th scope="row">Seller</th>
+                <th scope="row">Admin</th>
+                <th scope="row">Komisi</th>
+                <th scope="row">BuyerSku</th>
+                <th scope="row">BuyerStat</th>
+                <th scope="row">SellerStat</th>
+                <th scope="row">Desc</th>
               </tr>
             </thead>
             <tbody>`;
-              for(p=0;p<pas.length;p++){
-              t+=`<tr>`
-                for(const [x,y] of Object.entries(pas[p])){
-                  t+=`<td>${y}</td>`
-                }
-              t+=`</tr>`
-              }
+            t+=setTable(pas);
             t+=`</tbody>
           </table>
         </div>
@@ -87,5 +72,24 @@ async function priceList (df) {
   </body>
 </html>`;
   return t;
+}
+
+function setTable(c){
+  let t='';
+  for(i=0;i<c.length;i++){
+    t+=`<tr>`
+      for(const [k,v] of Object.entries(c[i])){
+        t+=`<td>${v}</td>`
+      }
+    t+=`</tr>`
+  }
+  return t;
+}
+
+async function priceList (df) {
+  const p1 = df.daftarHarga('prepaid');
+  const p2 = df.daftarHarga('pas');
+  const [pre,pas] = await Promise.all([p1,p2])
+  return template(pre,pas);
 }
 module.exports = { priceList }
