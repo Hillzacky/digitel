@@ -35,7 +35,7 @@ app.get(`/pasca`, async(req, res) => {
 app.get(`/pricelist`, async(req, res, next) => {
   res.set('Content-Type', 'text/html');
   // res.type('.html');
-  res.send(priceList(digiflazz));
+  res.send(Buffer.from(priceList(digiflazz)));
 });
 app.listen(port, host, () => {
   console.info(`Server is listening on ${port}`);
