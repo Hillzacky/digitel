@@ -1,6 +1,7 @@
 async function priceList (df) {
-  const pre = await df.daftarHarga('prepaid');
-  const pas = await df.daftarHarga('pas');
+  const p1 = df.daftarHarga('prepaid');
+  const p2 = df.daftarHarga('pas');
+  const [pre,pas] = await Promise.all([p1,p2])
   let t = `<!Doctype html>
 <html lang="en">
   <head>
@@ -24,20 +25,20 @@ async function priceList (df) {
             <thead>
               <tr>
                 <th scope="row">ProductName</th>
-                <td>Category</td>
-                <td>Brand</td>
-                <td>Type</td>
-                <td>SellerName</td>
-                <td>Price</td>
-                <td>BuyerSku</td>
-                <td>BuyerStat</td>
-                <td>SellerStat</td>
-                <td>Unlimited</td>
-                <td>Stock</td>
-                <td>Multi</td>
-                <td>Start</td>
-                <td>End</td>
-                <td>Desc</td>
+                <td scope="row">Category</td>
+                <td scope="row">Brand</td>
+                <td scope="row">Type</td>
+                <td scope="row">SellerName</td>
+                <td scope="row">Price</td>
+                <td scope="row">BuyerSku</td>
+                <td scope="row">BuyerStat</td>
+                <td scope="row">SellerStat</td>
+                <td scope="row">Unlimited</td>
+                <td scope="row">Stock</td>
+                <td scope="row">Multi</td>
+                <td scope="row">Start</td>
+                <td scope="row">End</td>
+                <td scope="row">Desc</td>
               </tr>
             </thead>
             <tbody>`;
@@ -58,15 +59,15 @@ async function priceList (df) {
             <thead>
               <tr>
                 <th scope="row">ProductName</th>
-                <td>Category</td>
-                <td>Brand</td>
-                <td>Seller</td>
-                <td>Admin</td>
-                <td>Komisi</td>
-                <td>BuyerSku</td>
-                <td>BuyerStat</td>
-                <td>SellerStat</td>
-                <td>Desc</td>
+                <td scope="row">Category</td>
+                <td scope="row">Brand</td>
+                <td scope="row">Seller</td>
+                <td scope="row">Admin</td>
+                <td scope="row">Komisi</td>
+                <td scope="row">BuyerSku</td>
+                <td scope="row">BuyerStat</td>
+                <td scope="row">SellerStat</td>
+                <td scope="row">Desc</td>
               </tr>
             </thead>
             <tbody>`;
