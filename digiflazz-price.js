@@ -71,10 +71,10 @@ async function priceList (df) {
               </tr>
             </thead>
             <tbody>`;
-              for(i=0;i<pas.length;i++){
+              for(p=0;p<pas.length;p++){
               t+=`<tr>`
-                for(const [k,v] of Object.entries(pas[i])){
-                  t+=`<td>${v}</td>`
+                for(const [x,y] of Object.entries(pas[p])){
+                  t+=`<td>${y}</td>`
                 }
               t+=`</tr>`
               }
