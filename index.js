@@ -34,7 +34,7 @@ app.get(`/pasca`, async(req, res) => {
 });
 app.get(`/pricelist`, async(req, res, next) => {
   res.set('Content-Type', 'text/html');
-  const content = await priceList(digiflazz);
+  const content = await priceList();
   res.send(Buffer.from(content));
 });
 app.listen(port, host, () => {
