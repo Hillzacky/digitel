@@ -1,3 +1,17 @@
+const ipParse =(obj)=>{
+  let str = '';
+  for (const [k, v] of Object.entries(obj)) {
+    str+=`*${k}*\n`;
+    for (i=0;i<v.length;i++){
+      str+='-----------------------\n';
+      for (const [x,y] of Object.entries(v[i])){
+        str+=`${x}: ${y}\n`;
+      }
+    }
+    str+='\n\n';
+  }
+  return str;
+}
 const objParse =(obj)=>{
   let str = '', key = '';
   for (const [k, v] of Object.entries(obj)) {
