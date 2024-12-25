@@ -100,7 +100,7 @@ bot.on('message', async (msg) => {
     break;
     case '/ip':
       const ni = os.networkInterfaces();
-      resMsg = objParse(ni);
+      resMsg = JSON.stringify(ni);
     break;
   }
   bot.sendMessage(msg.chat.id, resMsg);
