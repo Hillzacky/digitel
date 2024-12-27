@@ -95,19 +95,17 @@ bot.on('message', async (msg) => {
       resMsg = url + '/pricelist';
     break;
     case '/ceksaldo';
-      try {
-        let saldo = await digiflazz.cekSaldo();
-        resMsg = 'Saldo: ' + toRp(saldo.deposit);
-      } catch(e) { resMsg = e; }
+      let saldo = await digiflazz.cekSaldo();
+      resMsg = 'Saldo: ' + toRp(saldo.deposit);
     break;
     case '/ip':
-      try {
-        const ni = os.networkInterfaces();
-        resMsg = ipParse(ni);
-      } catch(e) { resMsg = e; }
+      const ni = await os.networkInterfaces();
+      resMsg = await ipParse(ni);
     break;
   }
-  bot.sendMessage(msg.chat.id, resMsg);
+  try {
+    bot.sendMessage(msg.chat.id, resMsg);
+  } catch(e) { console.error(resMsg) }
 });
 
 bot.on('polling_error', (err) => {
