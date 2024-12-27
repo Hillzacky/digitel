@@ -94,13 +94,17 @@ bot.on('message', async (msg) => {
     case '/harga':
       resMsg = url + '/pricelist';
     break;
-    case '/ceksaldo':
-      let saldo = await digiflazz.cekSaldo();
-      resMsg = 'Saldo: ' + toRp(saldo.deposit);
+    case '/ceksaldo';
+      try {
+        let saldo = await digiflazz.cekSaldo();
+        resMsg = 'Saldo: ' + toRp(saldo.deposit);
+      } catch(e) { resMsg = e; }
     break;
     case '/ip':
-      const ni = os.networkInterfaces();
-      resMsg = ipParse(ni);
+      try {
+        const ni = os.networkInterfaces();
+        resMsg = ipParse(ni);
+      } catch(e) { resMsg = e; }
     break;
   }
   bot.sendMessage(msg.chat.id, resMsg);
