@@ -5,7 +5,7 @@ const { Keyboard, Key } = require('telegram-keyboard');
 const Digiflazz = require('./digiflazz.js');
 const { priceList } = require('./digiflazz-price.js');
 const commands = require('./commands.js');
-const { toRp, waktu, objParse, objParses } = require('./utils.js');
+const { toRp, waktu, objParse, objParses, ipParse } = require('./utils.js');
 const digiflazz = new Digiflazz(process.env.USR, process.env.API);
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TOKEN;
@@ -78,18 +78,19 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
 
 bot.on('message', async (msg) => {
   let resMsg = null;
-  Keyboard.make([
+  switch(msg.text){
+    case '/start':
+      const k = Keyboard.make([
         '/ceksaldo',
         '/help',
         '/harga',
         '/ip'
-  ],{ columns: 2 }).reply();
-  switch(msg.text){
-    case '/start':
+      ],{ columns: 2 }).reply();
+      bot.sendMessage(msg.chat.id,'',k);
       resMsg = 'Welcome to the ppob application by Copysland!';
     break;
     case '/help':
-      resMsg = '<b>Cara Bertransaksi</b>\n<i>Transaksi Prepaid</i>\nRule : TRX code.tutuan.reportID\nContoh : TRX pulsatri50k.08990666680.R#01012025001\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n<b>Transaksi PascaBayar</b>\n<i>Validasi id tujuan sebelum pembayaran</i>\nCEK code.tujuan.reportID\n<i>Pembayaran transaksi pasca</i>\nBYR code.tujuan.reportID\n<i>Cek status transaksi pascabayar</i>STS code.tujuan.reportID';
+      resMsg = '**Cara Bertransaksi**\n\n**Transaksi Prepaid**\n```Rule : TRX code.tutuan.reportID\nContoh : TRX pulsatri50k.08990666680.R#010125```\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n**Transaksi PascaBayar**\n__Validasi id tujuan sebelum pembayaran__\n```CEK code.tujuan.reportID\n```__Pembayaran transaksi pasca__\n```BYR code.tujuan.reportID```\n__Cek status transaksi pascabayar__\n```STS code.tujuan.reportID```';
     break;
     case '/harga':
       resMsg = url + '/pricelist';
@@ -101,7 +102,7 @@ bot.on('message', async (msg) => {
     case '/ip':
       try {
       const ni = await os.networkInterfaces();
-      resMsg = await ipParse(JSON.stringify(ni));
+      resMsg = await ipParse(ni);
       } catch(e) { resMsg=e; }
     break;
   }
