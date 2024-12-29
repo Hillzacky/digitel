@@ -9,11 +9,17 @@ const { toRp, waktu, objParse, objParses, ipParse } = require('./utils.js');
 const digiflazz = new Digiflazz(process.env.USR, process.env.API);
 // replace the value below with the Telegram token you receive from @BotFather
 const token = process.env.TOKEN;
-// Create a bot that uses 'polling' to fetch new updates
-const bot = new TelegramBot(token, { polling: false });
 const url = process.env.URL ?? '0.0.0.0'
 const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ?? 8081;
+const bot = new TelegramBot(token, {
+  polling: {
+    params: {
+      allowed_updates: ["message", "callback_query"],
+    }
+  },
+  webhook: { url,host,port }
+});
 const app = express();
 bot.setWebHook(`${url}/webhook-${token}`);
 app.use(express.json());
@@ -81,22 +87,30 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
 });
 
 bot.on('message', async (msg) => {
-  let resMsg = null;
+  let resMsg = null, options = null;
   switch(msg.text){
     case '/start':
-      const k = Keyboard.make([
+      options = Keyboard.make([
         '/ceksaldo',
         '/help',
         '/harga',
         '/ip'
       ],{ columns: 2 }).reply();
-      bot.sendMessage(msg.chat.id,'',k);
       resMsg = 'Welcome to the ppob application by Copysland!';
     break;
     case '/help':
-      resMsg = '**Cara Bertransaksi**\n\n**Transaksi Prepaid**\n```Rule : TRX code.tutuan.reportID\nContoh : TRX pulsatri50k.08990666680.R#010125```\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n**Transaksi PascaBayar**\n__Validasi id tujuan sebelum pembayaran__\n```CEK code.tujuan.reportID\n```__Pembayaran transaksi pasca__\n```BYR code.tujuan.reportID```\n__Cek status transaksi pascabayar__\n```STS code.tujuan.reportID```';
+      options = { parse_mode: 'markdown' }
+      resMsg = '**Cara Bertransaksi**\n\n**Transaksi Prepaid**\n```Rule : TRX code.tutuan.reportID```\nContoh :\n```TRX pulsatri50.08990666680.R#00125```\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n**Transaksi PascaBayar**\n__Validasi id tujuan sebelum pembayaran__\n```CEK code.tujuan.reportID\n```__Pembayaran transaksi pasca__\n```BYR code.tujuan.reportID```\n__Cek status transaksi pascabayar__\n```STS code.tujuan.reportID```';
     break;
     case '/harga':
+      const uri = url + '/pricelist';
+      options = {
+        reply_markup: {
+          inline_keyboard: [
+            [{url: uri, callback_data:'test'}]
+          ]
+        }
+      }
       resMsg = url + '/pricelist';
     break;
     case '/ceksaldo':
@@ -105,17 +119,28 @@ bot.on('message', async (msg) => {
     break;
     case '/ip':
       try {
-      const ni = await os.networkInterfaces();
-      resMsg = await ipParse(ni);
+      const ni = os.networkInterfaces();
+      resMsg = ipParse(ni);
       } catch(e) { resMsg=e; }
     break;
   }
-  try {
-    bot.sendMessage(msg.chat.id, resMsg);
-  } catch(e) { console.error(e, resMsg) }
+  if(!options) {
+    bot.sendMessage(msg.chat.id, resMsg)
+  } else { bot.sendMessage(msg.chat.id, resMsg, options) }
 });
 
 bot.on('polling_error', (err) => {
   bot.startPolling();
   console.error(err.code);
+});
+bot.on('callback_query', function onCallbackQuery(cbq) {
+  console.log(cbq.message.chat.id, cbq.data, cbq);
+  bot.answerCallbackQuery(cbq.id, {
+    text: "It's working"
+  })
+  switch(cbq.data){
+    case 'test':
+      bot.sendMessage(cbq.message.chat.id, "It's working")
+    break;
+  }
 });
