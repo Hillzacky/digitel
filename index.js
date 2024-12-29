@@ -86,10 +86,10 @@ bot.on('message', async (msg) => {
   ],{ columns: 2 }).reply();
   switch(msg.text){
     case '/start':
-      resMsg = 'Welcome to the ppob!';
+      resMsg = 'Welcome to the ppob application by Copysland!';
     break;
-    case '/menu':
-      resMsg = 'PPOB by Copysland';
+    case '/help':
+      resMsg = '<b>Cara Bertransaksi</b>\n<i>Transaksi Prepaid</i>\nRule : TRX code.tutuan.reportID\nContoh : TRX pulsatri50k.08990666680.R#01012025001\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n<b>Transaksi PascaBayar</b>\n<i>Validasi id tujuan sebelum pembayaran</i>\nCEK code.tujuan.reportID\n<i>Pembayaran transaksi pasca</i>\nBYR code.tujuan.reportID\n<i>Cek status transaksi pascabayar</i>STS code.tujuan.reportID';
     break;
     case '/harga':
       resMsg = url + '/pricelist';
@@ -101,7 +101,7 @@ bot.on('message', async (msg) => {
     case '/ip':
       try {
       const ni = await os.networkInterfaces();
-      resMsg = await ipParse(ni);
+      resMsg = await ipParse(JSON.stringify(ni));
       } catch(e) { resMsg=e; }
     break;
   }
