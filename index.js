@@ -118,6 +118,9 @@ bot.on('message', async (msg) => {
       resMsg = ipParse(ni);
       } catch(e) { resMsg=e; }
     break;
+    case '/responsecode':
+      resMsg = 'https://developer.digiflazz.com/api/buyer/response-code';
+    break;
   }
   if(!options) {
     bot.sendMessage(msg.chat.id, resMsg).catch((err) => {
