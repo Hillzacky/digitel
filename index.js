@@ -77,13 +77,17 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
     case 'ISI':
     // nominal, bank, a/n
       res=await digiflazz.deposit(trx[0],trx[1].toUpperCase(),trx[2].toUpperCase());
+      bot.sendMessage(msg.chat.id, JSON.stringify(res))
     break;
     default:
       res='404 Command not found.';
     break;
   }
   console.info(res);
-  bot.sendMessage(msg.chat.id, objParse(res));
+  bot.sendMessage(msg.chat.id, objParse(res)).catch((err) => {
+    console.log(err.code);
+    console.log(err.response.body);
+  });
 });
 
 bot.on('message', async (msg) => {
@@ -100,7 +104,7 @@ bot.on('message', async (msg) => {
     break;
     case '/help':
       options = { parse_mode: 'markdown' }
-      resMsg = '**Cara Deposit**\n-----\n```Rule  ISI nominal.namabank.atasnama\nISI 200000.MANDIRI.COPYSLAND```\n=====\n**Cara Bertransaksi**\n-----\n**Transaksi Prepaid**\n```Rule  TRX code.tujuan.reportID```\nJika tanpa reportID akan generate secara otomatis\n```CONTOH  TRX pulsatri50.08990666680.R#00125```\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n**Transaksi PascaBayar**\n__Validasi id tujuan sebelum pembayaran__\n```Rule  CEK code.tujuan.reportID\n```__Pembayaran transaksi pasca__\n```Rule  BYR code.tujuan.reportID```\n__Cek status transaksi pascabayar__\n```Rule  STS code.tujuan.reportID```';
+      resMsg = '**Cara Deposit**\n-----\n```Rule  ISI nominal.namabank.atasnama\n  ISI 200000.MANDIRI.COPYSLAND```\n=====\n**Cara Bertransaksi**\n-----\n**Transaksi Prepaid**\n```Rule  TRX code.tujuan.reportID```\nJika tanpa reportID akan generate secara otomatis\n```CONTOH  TRX pulsatri50.08990666680.R#00125```\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n**Transaksi PascaBayar**\n__Validasi id tujuan sebelum pembayaran__\n```Rule  CEK code.tujuan.reportID\n```__Pembayaran transaksi pasca__\n```Rule  BYR code.tujuan.reportID```\n__Cek status transaksi pascabayar__\n```Rule  STS code.tujuan.reportID```';
     break;
     case '/harga':
       options = Keyboard.make([
