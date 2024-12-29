@@ -33,9 +33,11 @@ app.get(`/pricelist`, async(req, res, next) => {
   const content = await priceList();
   res.send(Buffer.from(content));
 });
-app.post(`/webhook-${token}`, Digiflazz.webhook(digiflazz), (req,res) => {
+app.post(`/webhook-${token}`, (req,res) => {
   bot.processUpdate(req.body);
   res.sendStatus(200);
+});
+app.post(`/webhook`, Digiflazz.webhook(digiflazz), (req,res) => {
   // Anda dapat memproses hasilnya disini
   // result webhook dapat diakses di req.dfwh
 });
