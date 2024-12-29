@@ -15,12 +15,8 @@ const url = process.env.URL ?? '0.0.0.0'
 const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ?? 8081;
 const app = express();
-bot.setWebHook(`${url}/bot${token}`);
+bot.setWebHook(`${url}/webhook-${token}`);
 app.use(express.json());
-app.post(`/bot${token}`, (req, res) => {
-  bot.processUpdate(req.body);
-  res.sendStatus(200);
-});
 app.get(`/`, (req, res) => {
   res.json({host,port});
 });
@@ -36,6 +32,12 @@ app.get(`/pricelist`, async(req, res, next) => {
   res.set('Content-Type', 'text/html');
   const content = await priceList();
   res.send(Buffer.from(content));
+});
+app.post(`/webhook-${token}`, Digiflazz.webhook(digiflazz), (req,res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
+  // Anda dapat memproses hasilnya disini
+  // result webhook dapat diakses di req.dfwh
 });
 app.listen(port, host, () => {
   console.info(`Server is listening on ${port}`);
