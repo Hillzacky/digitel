@@ -158,4 +158,4 @@ bot.on('callback_query', (cbq)=>{
 bot.on("message_reaction", (mr)=>{
   console.log(mr.user,mr.chat,mr)
   bot.sendMessage(mr.chat.id, JSON.stringify(mr))
-}
+});
