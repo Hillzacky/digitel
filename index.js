@@ -15,7 +15,7 @@ const port = process.env.PORT ?? 8081;
 const bot = new TelegramBot(token, {
   polling: {
     params: {
-      allowed_updates: ["message", "callback_query"],
+      allowed_updates: ["message", "callback_query", "message_reaction"],
     }
   },
   webhook: { url,host,port }
@@ -120,15 +120,27 @@ bot.on('message', async (msg) => {
     break;
   }
   if(!options) {
-    bot.sendMessage(msg.chat.id, resMsg)
-  } else { bot.sendMessage(msg.chat.id, resMsg, options) }
+    bot.sendMessage(msg.chat.id, resMsg).catch((err) => {
+      console.log(err.code);
+      console.log(err.response.body);
+    });
+  } else {
+    bot.sendMessage(msg.chat.id, resMsg, options).catch((err) => {
+      console.log(err.code);
+      console.log(err.response.body);
+    });
+  }
 });
 
 bot.on('polling_error', (err) => {
   bot.startPolling();
   console.error(err.code);
 });
-bot.on('callback_query', function onCallbackQuery(cbq) {
+bot.on('webhook_error', (err) => {
+  console.log(err.code);
+});
+
+bot.on('callback_query', (cbq)=>{
   console.log(cbq.message.chat.id, cbq.data, cbq);
   bot.answerCallbackQuery(cbq.id, {
     text: "It's working"
@@ -139,3 +151,8 @@ bot.on('callback_query', function onCallbackQuery(cbq) {
     break;
   }
 });
+
+bot.on("message_reaction", (mr)=>{
+  console.log(mr.user,mr.chat,mr)
+  bot.sendMessage(mr.chat.id, JSON.stringify(mr))
+}
