@@ -100,17 +100,17 @@ bot.on('message', async (msg) => {
     break;
     case '/help':
       options = { parse_mode: 'markdown' }
-      resMsg = '**Cara Bertransaksi**\n\n**Transaksi Prepaid**\n```Rule : TRX code.tutuan.reportID```\nContoh :\n```TRX pulsatri50.08990666680.R#00125```\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n**Transaksi PascaBayar**\n__Validasi id tujuan sebelum pembayaran__\n```CEK code.tujuan.reportID\n```__Pembayaran transaksi pasca__\n```BYR code.tujuan.reportID```\n__Cek status transaksi pascabayar__\n```STS code.tujuan.reportID```';
+      resMsg = '**Cara Bertransaksi**\n\n**Transaksi Prepaid**\n```Rule  TRX code.tutuan.reportID```\n \n```CONTOH  TRX pulsatri50.08990666680.R#00125```\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n**Transaksi PascaBayar**\n__Validasi id tujuan sebelum pembayaran__\n```Rule  CEK code.tujuan.reportID\n```__Pembayaran transaksi pasca__\n```Rule  BYR code.tujuan.reportID```\n__Cek status transaksi pascabayar__\n```Rule  STS code.tujuan.reportID```';
     break;
     case '/harga':
       const uri = url + '/pricelist';
-      options = {
+      options = JSON.stringify({
         reply_markup: {
           inline_keyboard: [
-            [{url: uri, callback_data:'test'}]
+            [{url: uri, callback_data: 'test'}]
           ]
         }
-      }
+      })
       resMsg = url + '/pricelist';
     break;
     case '/ceksaldo':
