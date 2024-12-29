@@ -71,8 +71,8 @@ class Digiflazz {
       uri: `${this._endpoint}/deposit`,
       body: {
         username: this._user,
-        amount,
-        bank: bank,
+        amount: amount,
+        Bank: bank,
         owner_name: name,
         sign: crypto.createHash('md5').update(`${this._user}${this._key}deposit`).digest('hex')
       },
