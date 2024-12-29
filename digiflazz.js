@@ -154,7 +154,7 @@ class Digiflazz {
     const hmac = 'sha1=' + crypto.createHmac('sha1', this._keyWebhooks).update(JSON.stringify(req.body)).digest('hex');
 
     if(req.headers['x-hub-signature'] === hmac) {
-      req.digiwebhooks = {
+      req.dfwh = {
         event: req.headers['x-digiflazz-event'],
         delivery: req.headers['x-digiflazz-delivery'],
         data: req.body.data
