@@ -103,14 +103,9 @@ bot.on('message', async (msg) => {
       resMsg = '**Cara Bertransaksi**\n\n**Transaksi Prepaid**\n```Rule  TRX code.tutuan.reportID```\n \n```CONTOH  TRX pulsatri50.08990666680.R#00125```\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n**Transaksi PascaBayar**\n__Validasi id tujuan sebelum pembayaran__\n```Rule  CEK code.tujuan.reportID\n```__Pembayaran transaksi pasca__\n```Rule  BYR code.tujuan.reportID```\n__Cek status transaksi pascabayar__\n```Rule  STS code.tujuan.reportID```';
     break;
     case '/harga':
-      const uri = url + '/pricelist';
-      options = JSON.stringify({
-        reply_markup: {
-          inline_keyboard: [
-            [{url: uri, callback_data: 'test'}]
-          ]
-        }
-      })
+      options = Keyboard.make([
+        Key.callback('Daftar Harga', 'test')
+      ]).inline()
       resMsg = url + '/pricelist';
     break;
     case '/ceksaldo':
@@ -140,7 +135,7 @@ bot.on('callback_query', function onCallbackQuery(cbq) {
   })
   switch(cbq.data){
     case 'test':
-      bot.sendMessage(cbq.message.chat.id, "It's working")
+      bot.sendMessage(cbq.chat.id, "It's working")
     break;
   }
 });
