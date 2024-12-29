@@ -4,6 +4,9 @@ function priceList(){
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="Copysland"/>
+    <meta property="og:description" content="Telegram x Digiflazz PPOB"/>
+    <meta property="og:author" content="Hillzacky"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
   </head>
   <body class="container-fluid py-3">
@@ -91,24 +94,5 @@ function priceList(){
   </body>
 </html>`;
   return t;
-}
-
-function setTable(c){
-  let t='';
-  for(i=0;i<c.length;i++){
-    t+=`<tr>`
-      for(const [k,v] of Object.entries(c[i])){
-        t+=`<td>${v}</td>`
-      }
-    t+=`</tr>`
-  }
-  return t;
-}
-
-async function priceListjs (df) {
-  const p1 = df.daftarHarga('prepaid');
-  const p2 = df.daftarHarga('pas');
-  const [pre,pas] = await Promise.all([p1,p2])
-  return template(pre,pas);
 }
 module.exports = { priceList }
