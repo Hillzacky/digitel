@@ -162,6 +162,21 @@ class Digiflazz {
     }
     res.json({msg:"received"})
   }
+
+  ping(id){
+    const options = {
+      method: 'POST',
+      uri: `${this._endpoint}/v1/report/hooks/${id}/pings`,
+      json: true
+    };
+    return rp(options)
+      .then(function (resp) {
+        return resp.data;
+      })
+      .catch(function (err) {
+        throw parseError(err);
+      });
+  }
 }
 
 module.exports = Digiflazz;
