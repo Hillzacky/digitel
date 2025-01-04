@@ -1,9 +1,9 @@
 const ipParse =(obj)=>{
   let str = '';
   for (const [k, v] of Object.entries(obj)) {
-    str+=`*${k}*\n`;
+    str+=`Slot Card <${k}>\n`;
     for (i=0;i<v.length;i++){
-      str+='-----------------------\n';
+      str+='\n\n';
       for (const [x,y] of Object.entries(v[i])){
         str+=`${x}: ${y}\n`;
       }
@@ -18,21 +18,17 @@ const objParse =(obj)=>{
     key = k.replaceAll("_"," ");
     if((typeof v == 'object')||(k == 'desc')){
       for (const [k2, v2] of Object.entries(v)){
-        if (k2 == 'detail'){
-          if ((typeof v2 == 'object')||Array.isArray(v2)){
-            for (l=0;l<v2.length;l++){
-              for (const [k3, v3] of Object.entries(v2[l])){
-                str+=`${k3}: ${v3}\n`;
-              }
-              str+=`\n`;
+        key2 = k2.replaceAll("_"," ");
+        if ((typeof v2 == 'object')||(k2 == 'detail')){
+          for (l=0;l<v2.length;l++){
+            for (const [k3, v3] of Object.entries(v2[l])){
+              key3 = k3.replaceAll("_"," ");
+              str+=`${key3}: ${v3}\n`;
             }
-          } else {
-            for (const [k3, v3] of Object.entries(v2)){
-              str+=`${k3}: ${v3}\n`;
-            }
+            str+=`\n`;
           }
         } else {
-          str+=`${k2}: ${v2}\n`;
+          str+=`${key2}: ${v2}\n`;
         }
       }
       str+=`\n`;
