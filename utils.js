@@ -16,12 +16,12 @@ const objParse =(obj)=>{
   let str = '', key = '';
   for (const [k, v] of Object.entries(obj)) {
     key = k.replaceAll("_"," ");
-    if(v.desc && (typeof v.desc == 'object')){
-      for (const [k2, v2] of Object.entries(v.desc)){
+    if(typeof v == 'object'){
+      for (const [k2, v2] of Object.entries(v)){
         str+=`\n`;
-        if(Array.isArray(v2.detail) || typeof v2.detail == 'object'){
-          for (i=0;i<v2.detail.length;i++){
-            for (const [k3, v3] of Object.entries(v2.detail[i])){
+        if(Array.isArray(v2) || typeof v2 == 'object'){
+          for (i=0;i<v2.length;i++){
+            for (const [k3, v3] of Object.entries(v2[i])){
               str+=`${k3}: ${v3}\n`;
             }
             str+=`\n`;
@@ -31,7 +31,9 @@ const objParse =(obj)=>{
       }
       str+=`\n`;
     }
-    str+=`${key}: ${v}\n`;
+    if (typeof v !== 'object') {
+      str+=`${key}: ${v}\n`;
+    }
   }
   return str;
 }
