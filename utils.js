@@ -16,11 +16,11 @@ const objParse =(obj)=>{
   let str = '', key = '';
   for (const [k, v] of Object.entries(obj)) {
     key = k.replaceAll("_"," ");
-    if(typeof v.desc == 'object'){
+    if(v.desc && (typeof v.desc == 'object')){
       for (const [k2, v2] of Object.entries(v.desc)){
         str+=`\n`;
         if(Array.isArray(v2.detail) || typeof v2.detail == 'object'){
-          for (i=0;i<k2.detail;i++){
+          for (i=0;i<v2.detail.length;i++){
             for (const [k3, v3] of Object.entries(v2.detail[i])){
               str+=`${k3}: ${v3}\n`;
             }
