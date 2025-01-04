@@ -145,10 +145,10 @@ bot.on('message', async (msg) => {
 
 bot.on('polling_error', (err) => {
   bot.startPolling();
-  console.error(err.code);
+  console.error(err.code, err);
 });
 bot.on('webhook_error', (err) => {
-  console.error(err.code);
+  console.error(err.code, err);
 });
 
 bot.on('callback_query', async(cbq)=>{
