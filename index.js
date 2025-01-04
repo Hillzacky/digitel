@@ -48,9 +48,10 @@ app.post(`/webhook-${token}`, (req,res) => {
 app.post(`/webhook`, Digiflazz.webhook(digiflazz), (req,res) => {
   // Anda dapat memproses hasilnya disini
   // result webhook dapat diakses di req.dfwh
+  console.info(req.dfwh)
 });
 app.listen(port, host, () => {
-  console.info(`Server is listening on ${port}`);
+  console.info(`Server listening on ${port}`);
 });
 
 bot.setMyCommands(commands);
@@ -85,10 +86,10 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
       res='404 Command not found.';
     break;
   }
-  console.info(res);
+  // console.info(res);
   bot.sendMessage(msg.chat.id, objParse(res)).catch((err) => {
-    console.log(err.code);
-    console.log(err.response.body);
+    console.error(err.code);
+    console.info(err.response.body);
   });
 });
 
@@ -110,7 +111,8 @@ bot.on('message', async (msg) => {
     break;
     case '/harga':
       options = Keyboard.make([
-        Key.callback('Daftar Harga', 'test')
+        Key.callback('Prepaid', 'prepa'),
+        Key.callback('Pospaid', 'pasca')
       ]).inline()
       resMsg = url + '/pricelist';
     break;
@@ -130,13 +132,13 @@ bot.on('message', async (msg) => {
   }
   if(!options) {
     bot.sendMessage(msg.chat.id, resMsg).catch((err) => {
-      console.log(err.code);
-      console.log(err.response.body);
+      console.error(err.code);
+      console.info(err.response.body);
     });
   } else {
     bot.sendMessage(msg.chat.id, resMsg, options).catch((err) => {
-      console.log(err.code);
-      console.log(err.response.body);
+      console.error(err.code);
+      console.info(err.response.body);
     });
   }
 });
@@ -146,22 +148,27 @@ bot.on('polling_error', (err) => {
   console.error(err.code);
 });
 bot.on('webhook_error', (err) => {
-  console.log(err.code);
+  console.error(err.code);
 });
 
-bot.on('callback_query', (cbq)=>{
+bot.on('callback_query', async(cbq)=>{
+  let res = '';
   console.log(cbq.message.chat.id, cbq.data, cbq);
   bot.answerCallbackQuery(cbq.id, {
     text: "It's working"
   })
   switch(cbq.data){
-    case 'test':
-      bot.sendMessage(cbq.chat.id, "It's working")
+    case 'prepa':
+      res+= await digiflazz.daftarHarga('prepaid');
+    break;
+    case 'pasca':
+      res+= await digiflazz.daftarHarga('pasca');
     break;
   }
+  bot.sendMessage(cbq.chat.id, JSON.stringify(res))
 });
 
 bot.on("message_reaction", (mr)=>{
-  console.log(mr.user,mr.chat,mr)
+  // console.log(mr.user,mr.chat,mr)
   bot.sendMessage(mr.chat.id, JSON.stringify(mr))
 });
