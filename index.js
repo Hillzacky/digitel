@@ -1,10 +1,10 @@
-const express = require('express');
 const os = require('os');
+const express = require('express');
+const commands = require('./commands.js');
 const TelegramBot = require('node-telegram-bot-api');
-const { Keyboard, Key } = require('telegram-keyboard');
 const Digiflazz = require('./digiflazz.js');
 const { priceList } = require('./digiflazz-price.js');
-const commands = require('./commands.js');
+const { Keyboard, Key } = require('telegram-keyboard');
 const { toRp, waktu, objParse, objParses, ipParse } = require('./utils.js');
 const digiflazz = new Digiflazz(process.env.USR, process.env.API);
 // replace the value below with the Telegram token you receive from @BotFather
@@ -78,9 +78,9 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
       res=await digiflazz.validateInqPln(group[2]);
     break;
     case 'ISI':
-    // nominal, bank, a/n
+      // nominal, bank, a/n
       res=await digiflazz.deposit(trx[0],trx[1].toUpperCase(),trx[2].toUpperCase());
-      bot.sendMessage(msg.chat.id, JSON.stringify(res))
+      // bot.sendMessage(msg.chat.id, JSON.stringify(res))
     break;
     default:
       res='404 Command not found.';
@@ -159,10 +159,10 @@ bot.on('callback_query', async(cbq)=>{
   })
   switch(cbq.data){
     case 'prepa':
-      res+= await digiflazz.daftarHarga('prepaid');
+      res = await digiflazz.daftarHarga('prepaid');
     break;
     case 'pasca':
-      res+= await digiflazz.daftarHarga('pasca');
+      res = await digiflazz.daftarHarga('pasca');
     break;
   }
   bot.sendMessage(cbq.chat.id, JSON.stringify(res))
