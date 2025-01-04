@@ -18,9 +18,9 @@ const objParse =(obj)=>{
     key = k.replaceAll("_"," ");
     if((typeof v == 'object')||(k == 'desc')){
       for (const [k2, v2] of Object.entries(v)){
-        if((typeof v2 == 'object')||(k2 == 'detail')){
-          for (i=0;i<v2.length;i++){
-            for (const [k3, v3] of Object.entries(v2[i])){
+        if (k2 == 'detail'){
+          for (l=0;l<v2.length;l++){
+            for (const [k3, v3] of Object.entries(v2[l])){
               str+=`${k3}: ${v3}\n`;
             }
             str+=`\n`;
