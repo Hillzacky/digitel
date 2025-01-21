@@ -42,7 +42,9 @@ app.get(`/pricelist`, async(req, res, next) => {
   res.send(Buffer.from(content));
 });
 app.post(`/webhook-${token}`, (req,res) => {
+  const {message:{chat:{id}}} = req.body;
   bot.processUpdate(req.body);
+  bot.sendMessage(message.chat.id, 'wh received', {});
   res.sendStatus(200);
 });
 app.post(`/webhook`, Digiflazz.webhook(digiflazz), (req,res) => {
@@ -51,6 +53,7 @@ app.post(`/webhook`, Digiflazz.webhook(digiflazz), (req,res) => {
   console.info(req.dfwh)
   { event, delivery, data } = req.dfwh;
   let result = event + ': ' + JSON.stringify(data);
+  res.json(data);
 });
 app.listen(port, host, () => {
   console.info(`Server listening on ${port}`);
