@@ -173,7 +173,7 @@ bot.on('callback_query', async(cbq)=>{
   bot.sendMessage(cbq.chat.id, JSON.stringify(res))
 });
 
-bot.on("message_reaction", (mr)=>{
+bot.on("message_reaction", async(mr)=>{
   // console.log(mr.user,mr.chat,mr)
   const {
     emoji,emojiAdded,emojiKept,emojiRemoved,
