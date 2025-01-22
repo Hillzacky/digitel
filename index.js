@@ -51,7 +51,7 @@ app.post(`/webhook`, Digiflazz.webhook(digiflazz), (req,res) => {
   // Anda dapat memproses hasilnya disini
   // result webhook dapat diakses di req.dfwh
   console.info(req.dfwh)
-  { event, delivery, data } = req.dfwh;
+  let { event, delivery, data } = req.dfwh;
   let result = event + ': ' + JSON.stringify(data);
   res.json(data);
 });
