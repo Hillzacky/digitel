@@ -175,5 +175,15 @@ bot.on('callback_query', async(cbq)=>{
 
 bot.on("message_reaction", (mr)=>{
   // console.log(mr.user,mr.chat,mr)
+  const {
+    emoji,emojiAdded,emojiKept,emojiRemoved,
+    customEmoji,customEmojiAdded,customEmojiKept, customEmojiRemoved,
+    paid,paidAdded,
+  } = mr.reactions();
+  const reaction = mr.messageReaction;
+  const message = reaction.message_id;
+  if (emoji.includes("👍")) {
+    await mr.reply(mr.chat.id+":"+message);
+  }
   bot.sendMessage(mr.chat.id, JSON.stringify(mr))
 });
