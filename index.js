@@ -131,8 +131,11 @@ bot.on('message', async (msg) => {
       resMsg = ipParse(ni);
       } catch(e) { resMsg=e; }
     break;
-    case '/responsecode':
+    case '/rc':
       resMsg = 'https://developer.digiflazz.com/api/buyer/response-code';
+    break;
+    case '/getChatId':
+      resMsg = 'Your ID : ' + msg.chat.id;
     break;
   }
   if(!options) {
