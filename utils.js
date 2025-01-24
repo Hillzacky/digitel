@@ -1,3 +1,10 @@
+const lastChatId =async(record=0)=>{
+  const t = process.env.TOKEN;
+  const u = `https://api.telegram.org/bot${t}/getUpdates`
+  const f = await fetch(u)
+  const r = await f.json()
+  return r.result[0].message.chat.id
+}
 const ipParse =(obj)=>{
   let str = '';
   for (const [k, v] of Object.entries(obj)) {
