@@ -77,5 +77,5 @@ const waktu =()=> {
   return day+month+year+hour+minutes+seconds
 }
 module.exports = {
-  toRp, waktu, objParse, objParses, ipParse
+  toRp, waktu, objParse, objParses, ipParse, lastChatId
 }
