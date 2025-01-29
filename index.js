@@ -12,7 +12,7 @@ const digiflazz = new Digiflazz(process.env.USR, process.env.API);
 const token = process.env.TOKEN;
 const url = process.env.URL ?? '0.0.0.0'
 const host = process.env.HOST ?? '0.0.0.0';
-const port = process.env.PORT ?? 8081;
+const port = Number(process.env.PORT) ?? 8081;
 const bot = new Telegraf(token);
 
 const app = express();
@@ -61,7 +61,6 @@ bot.start((ctx) => ctx.reply('Welcome'))
 bot.on(message('sticker'), (ctx) => ctx.reply('👍'))
 bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 
-bot.setMyCommands(commands);
 bot.use(async (ctx, next) => {
   console.time(`Processing update ${ctx.update.update_id}`);
   await next() // runs next middleware
