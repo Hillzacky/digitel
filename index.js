@@ -16,7 +16,9 @@ const port = process.env.PORT ?? 8081;
 const bot = new Telegraf(token);
 
 const app = express();
-app.use(await bot.createWebhook({ domain: `${url}/webhook-${token}` }));
+app.use(bot.createWebhook({
+  domain: `${url}/webhook-${token}`
+}));
 app.use(express.json());
 app.get(`/`, (req, res) => {
   let time = new Date();
