@@ -1,4 +1,5 @@
 const os = require('os');
+const crypto = require('crypto');
 const express = require('express');
 const commands = require('./commands.js');
 const { Telegraf, Markup } = require('telegraf');
