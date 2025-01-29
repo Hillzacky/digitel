@@ -16,7 +16,7 @@ const port = process.env.PORT ?? 8081;
 const bot = new Telegraf(token)
 
 const app = express();
-app.use(await bot.createWebHook(`${url}/webhook-${token}`);
+app.use(await bot.createWebhook({ domain: `${url}/webhook-${token}` });
 app.use(express.json());
 app.get(`/`, (req, res) => {
   let time = new Date();
@@ -51,8 +51,9 @@ app.post(`/webhook`, Digiflazz.webhook(digiflazz), (req,res) => {
   res.json(data);
 });
 
+bot.help((ctx) => ctx.replyWithMarkdown('**Cara Deposit**\n-----\n```Rule  ISI nominal.namabank.atasnama\n  ISI 200000.MANDIRI.COPYSLAND```\n=====\n**Cara Bertransaksi**\n-----\n**Transaksi Prepaid**\n```Rule  TRX code.tujuan.reportID```\nJika tanpa reportID akan generate secara otomatis\n```CONTOH  TRX pulsatri50.08990666680.R#00125```\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n**Transaksi PascaBayar**\n__Validasi id tujuan sebelum pembayaran__\n```Rule  CEK code.tujuan.reportID\n```__Pembayaran transaksi pasca__\n```Rule  BYR code.tujuan.reportID```\n__Cek status transaksi pascabayar__\n```Rule  STS code.tujuan.reportID```'))
+
 bot.start((ctx) => ctx.reply('Welcome'))
-bot.help((ctx) => ctx.reply('Send me a sticker'))
 bot.on(message('sticker'), (ctx) => ctx.reply('👍'))
 bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 
@@ -95,10 +96,10 @@ bot.hears(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (ctx, group) => {
   });
 });
 
-bot.on(message(text), async (ctx) => {
+bot.on(message('text'), async (ctx) => {
   let resMsg = null, options = null;
   switch(ctx.message.text){
-    case '/start':
+    case '/menu':
       options = Keyboard.make([
         '/ceksaldo',
         '/help',
@@ -106,10 +107,6 @@ bot.on(message(text), async (ctx) => {
         '/ip'
       ],{ columns: 2 }).reply();
       resMsg = 'Welcome to the ppob application by Copysland!';
-    break;
-    case '/help':
-      options = { parse_mode: 'markdown' }
-      resMsg = '**Cara Deposit**\n-----\n```Rule  ISI nominal.namabank.atasnama\n  ISI 200000.MANDIRI.COPYSLAND```\n=====\n**Cara Bertransaksi**\n-----\n**Transaksi Prepaid**\n```Rule  TRX code.tujuan.reportID```\nJika tanpa reportID akan generate secara otomatis\n```CONTOH  TRX pulsatri50.08990666680.R#00125```\nUntuk pengecekan status kirim hal serupa dengan id report yang dikirim sebelumnya.\n\n**Transaksi PascaBayar**\n__Validasi id tujuan sebelum pembayaran__\n```Rule  CEK code.tujuan.reportID\n```__Pembayaran transaksi pasca__\n```Rule  BYR code.tujuan.reportID```\n__Cek status transaksi pascabayar__\n```Rule  STS code.tujuan.reportID```';
     break;
     case '/harga':
       options = Keyboard.make([
