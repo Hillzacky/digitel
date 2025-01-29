@@ -1,7 +1,7 @@
 const os = require('os');
 const express = require('express');
 const commands = require('./commands.js');
-const { Telegraf } = require('telegraf');
+const { Telegraf, Markup } = require('telegraf');
 const { message } = require('telegraf/filters')
 const Digiflazz = require('./digiflazz.js');
 const { priceList } = require('./digiflazz-price.js');
@@ -16,9 +16,11 @@ const port = process.env.PORT ?? 8081;
 const bot = new Telegraf(token);
 
 const app = express();
-app.use(bot.createWebhook({
-  domain: `${url}/webhook-${token}`
-}));
+app.use(async (ctx, next) =>
+  (await bot.createWebhook({
+    domain: `${url}/webhook-${token}`
+  }))(ctx.req, ctx.res, next),
+);
 app.use(express.json());
 app.get(`/`, (req, res) => {
   let time = new Date();
