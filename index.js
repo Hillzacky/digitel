@@ -1,7 +1,8 @@
 const os = require('os');
 const express = require('express');
 const commands = require('./commands.js');
-const TelegramBot = require('node-telegram-bot-api');
+const { Telegraf } = require('telegraf');
+const { message } = require('telegraf/filters')
 const Digiflazz = require('./digiflazz.js');
 const { priceList } = require('./digiflazz-price.js');
 const { Keyboard, Key } = require('telegram-keyboard');
@@ -12,16 +13,10 @@ const token = process.env.TOKEN;
 const url = process.env.URL ?? '0.0.0.0'
 const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ?? 8081;
-const bot = new TelegramBot(token, {
-  polling: {
-    params: {
-      allowed_updates: ["message", "callback_query", "message_reaction"],
-    }
-  },
-  webhook: { url,host,port }
-});
+const bot = new Telegraf(token)
+
 const app = express();
-bot.setWebHook(`${url}/webhook-${token}`);
+app.use(await bot.createWebHook(`${url}/webhook-${token}`);
 app.use(express.json());
 app.get(`/`, (req, res) => {
   let time = new Date();
@@ -55,12 +50,14 @@ app.post(`/webhook`, Digiflazz.webhook(digiflazz), (req,res) => {
   let result = event + ': ' + JSON.stringify(data);
   res.json(data);
 });
-app.listen(port, host, () => {
-  console.info(`Server listening on ${port}`);
-});
+
+bot.start((ctx) => ctx.reply('Welcome'))
+bot.help((ctx) => ctx.reply('Send me a sticker'))
+bot.on(message('sticker'), (ctx) => ctx.reply('👍'))
+bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 
 bot.setMyCommands(commands);
-bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
+bot.hears(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (ctx, group) => {
   // sku, tujuan, ref_id
   let res=null,
   cmd=group[1].toUpperCase(),
@@ -85,22 +82,22 @@ bot.onText(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (msg, group) => {
     case 'ISI':
       // nominal, bank, a/n
       res=await digiflazz.deposit(trx[0],trx[1].toUpperCase(),trx[2].toUpperCase());
-      // bot.sendMessage(msg.chat.id, JSON.stringify(res))
+      // bot.sendMessage(ctx.chat.id, JSON.stringify(res))
     break;
     default:
       res='404 Command not found.';
     break;
   }
   // console.info(res);
-  bot.sendMessage(msg.chat.id, objParse(res)).catch((err) => {
+  bot.telegram.sendMessage(ctx.chat.id, objParse(res)).catch((err) => {
     console.error(err.code);
     console.info(err.response.body);
   });
 });
 
-bot.on('message', async (msg) => {
+bot.on(message(text), async (ctx) => {
   let resMsg = null, options = null;
-  switch(msg.text){
+  switch(ctx.message.text){
     case '/start':
       options = Keyboard.make([
         '/ceksaldo',
@@ -139,12 +136,12 @@ bot.on('message', async (msg) => {
     break;
   }
   if(!options) {
-    bot.sendMessage(msg.chat.id, resMsg).catch((err) => {
+    bot.telegram.sendMessage(ctx.message.chat.id, resMsg).catch((err) => {
       console.error(err.code);
       console.info(err.response.body);
     });
   } else {
-    bot.sendMessage(msg.chat.id, resMsg, options).catch((err) => {
+    bot.telegram.sendMessage(ctx.message.chat.id, resMsg, options).catch((err) => {
       console.error(err.code);
       console.info(err.response.body);
     });
@@ -173,7 +170,7 @@ bot.on('callback_query', async(cbq)=>{
       res = await digiflazz.daftarHarga('pasca');
     break;
   }
-  bot.sendMessage(cbq.chat.id, JSON.stringify(res))
+  bot.telegram.sendMessage(cbq.chat.id, JSON.stringify(res))
 });
 
 bot.on("message_reaction", async(mr)=>{
@@ -188,5 +185,21 @@ bot.on("message_reaction", async(mr)=>{
   if (emoji.includes("👍")) {
     await mr.reply(mr.chat.id+":"+message);
   }
-  bot.sendMessage(mr.chat.id, JSON.stringify(mr))
+  bot.telegram.sendMessage(mr.chat.id, JSON.stringify(mr))
 });
+
+
+app.listen(port, host, () => {
+  console.info(`Server listening on ${port}`);
+})
+bot.launch({
+  allowed_updates: ["message", "callback_query", "message_reaction"],
+  webhook: {
+    domain: `${url}/webhook-${token}`,
+    port: port,
+    path: bot.secretPathComponent(),
+    secretToken: crypto.randomBytes(64).toString("hex")
+  },
+})
+process.once('SIGINT', () => bot.stop('SIGINT'))
+process.once('SIGTERM', () => bot.stop('SIGTERM'))
