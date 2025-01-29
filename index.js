@@ -13,10 +13,10 @@ const token = process.env.TOKEN;
 const url = process.env.URL ?? '0.0.0.0'
 const host = process.env.HOST ?? '0.0.0.0';
 const port = process.env.PORT ?? 8081;
-const bot = new Telegraf(token)
+const bot = new Telegraf(token);
 
 const app = express();
-app.use(await bot.createWebhook({ domain: `${url}/webhook-${token}` });
+app.use(await bot.createWebhook({ domain: `${url}/webhook-${token}` }));
 app.use(express.json());
 app.get(`/`, (req, res) => {
   let time = new Date();
@@ -58,6 +58,12 @@ bot.on(message('sticker'), (ctx) => ctx.reply('👍'))
 bot.hears('hi', (ctx) => ctx.reply('Hey there'))
 
 bot.setMyCommands(commands);
+bot.use(async (ctx, next) => {
+  console.time(`Processing update ${ctx.update.update_id}`);
+  await next() // runs next middleware
+  // runs after next middleware finishes
+  console.timeEnd(`Processing update ${ctx.update.update_id}`);
+})
 bot.hears(/([a-zA-Z]{3,3}) ([a-zA-Z0-9.#]+)/, async (ctx, group) => {
   // sku, tujuan, ref_id
   let res=null,
