@@ -196,9 +196,7 @@ bot.on("message_reaction", async(mr)=>{
 });
 
 
-app.listen(port, host, () => {
-  console.info(`Server listening on ${port}`);
-})
+
 bot.launch({
   allowed_updates: ["message", "callback_query", "message_reaction"],
   webhook: {
@@ -210,3 +208,6 @@ bot.launch({
 })
 process.once('SIGINT', () => bot.stop('SIGINT'))
 process.once('SIGTERM', () => bot.stop('SIGTERM'))
+app.listen(port, host, () => {
+  console.info(`Server listening on ${port}`);
+})
